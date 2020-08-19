@@ -8,7 +8,6 @@ selectedLabel = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\0
 import pickle
 def sampleFeatures():
     data = open(allChannelsFile,'w')
-
     for i in range(22):
         if(i%1 == 0):
             if i < 10:
@@ -105,7 +104,6 @@ def execFunc():
                         file1.write(str(oneOrZero[j]))
                         file1.write('\n')
                     # print(oneOrZero[j])
-
 
 # sampleFeatures()
 # removechannelsemptylines()

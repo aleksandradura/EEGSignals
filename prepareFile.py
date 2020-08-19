@@ -1,5 +1,23 @@
 forOneValue, total, allrow = 252, 0, 10112
 nLabel, nTrial, nUser, nChannel, nTime  = 4, 40, 32, 40, 8064
+
+
+BinaryFileForValence = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label_class_0.dat"
+labelValenceFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_0.dat'
+Binary252ValuesValence = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_0_01.dat"
+
+BinaryFileForArousal = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label_class_1.dat"
+labelArousalFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_1.dat'
+Binary252ValuesArousal = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_1_01.dat"
+
+BinaryFileForDominance = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label_class_2.dat"
+labelDominanceFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_2.dat'
+Binary252ValuesDominance = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_2_01.dat"
+
+BinaryFileForLiking = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label_class_3.dat"
+labelLikingFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_3.dat'
+Binary252ValuesLiking = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_3_01.dat"
+
 #konwersja plików na format do odczytu
 import pickle
 def convertData():
@@ -62,7 +80,9 @@ def sampleFeatures():
                                 # if (ch == 12 or ch == 30 or ch == 31):  # Pz 13, Fz 31, Cz 32
                                 # if (ch == 8 or ch == 15 or ch == 24 or ch == 31):  # valence, beta, CP1 9, Oz 16, FC6 25, Cz 32
                                 # if (ch == 6 or ch == 20 or ch == 21 or ch == 22 or ch==23 or ch==24 or ch==27 or ch==31):  # valence, gamma, T7 7, CP6 21, CP2 22, C4 23, T8 24, FC6 25, F8 28
-                                if ((ch == 7 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 16 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 23 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)))):  # arousal, theta CP6 21, alpha Cz 32, beta FC2 26
+                                #for beta RCA
+                                #if ((ch == 7 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 16 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 23 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)))):  
+                                if ch == 7 or ch == 16  or ch == 23:
                                 # if ((ch == 20 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7))) or (ch == 25 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 31 and (float(x['data'][tr][ch][dat]) > float(8) and float(x['data'][tr][ch][dat]) < float(13)))):  # arousal, theta CP6 21, alpha Cz 32, beta FC2 26
                                 # if ((ch == 26 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7))) or (ch == 31 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 22 and (float(x['data'][tr][ch][dat]) > float(8) and float(x['data'][tr][ch][dat]) < float(13)))):  #Geneva: arousal, theta CP6 21, alpha Cz 32, beta FC2 26
                                 #if (ch != 5 and ch != 8 and ch != 19):  # RandomTree
@@ -85,9 +105,9 @@ def sampleFeatures():
     data.close()
 
 # zamiana emocji na wartości binarne
-def changeEmotionsToBinaryValue():
-    fout_labels_class = open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label_class_3.dat", 'w')
-    with open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_3.dat', 'r') as f:
+def changeEmotionsToBinaryValue(BinaryFile, labelFile):
+    fout_labels_class = open(BinaryFile, 'w')
+    with open(labelFile, 'r') as f:
         for val in f:
             if float(val) > 4.5:
                 fout_labels_class.write(str(1) + "\n")
@@ -95,10 +115,10 @@ def changeEmotionsToBinaryValue():
                 fout_labels_class.write(str(0) + "\n")
 
 # powielenie 252 wartości dla każdej emocji
-def copy252TimesEachLabelValue():
-    fout_labels_class = open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_3_01.dat", 'w')
+def copy252TimesEachLabelValue(Binary252Values, BinaryFile):
+    fout_labels_class = open(Binary252Values, 'w')
     #plik z wartościami 0-1 dla jednego filmiku [40 wierszy])
-    with open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label_class_3.dat', 'r') as f:
+    with open(BinaryFile, 'r') as f:
 
         for val in f:
             for forOne in range(forOneValue):
@@ -106,11 +126,31 @@ def copy252TimesEachLabelValue():
             fout_labels_class.write("\n")
         fout_labels_class.write("\n")
 
+def remove01emptylines(selectedLabelFiles):
+    with open(selectedLabelFiles, "r") as file01:
+        lines = file01.readlines()
+        with open(selectedLabelFiles, "w") as file01:
+            for line in lines:
+                if line.strip() != "":
+                    file01.write(line)
+
 # convertData()
 sampleFeatures()
-# changeEmotionsToBinaryValue()
-# copy252TimesEachLabelValue()
+# changeEmotionsToBinaryValue(BinaryFileForValence, labelValenceFile)
+# copy252TimesEachLabelValue(Binary252ValuesValence, BinaryFileForValence)
+# remove01emptylines(Binary252ValuesValence)
 
+# changeEmotionsToBinaryValue(BinaryFileForArousal, labelArousalFile)
+# copy252TimesEachLabelValue(Binary252ValuesArousal, BinaryFileForArousal)
+# remove01emptylines(Binary252ValuesArousal)
+
+# changeEmotionsToBinaryValue(BinaryFileForDominance, labelDominanceFile)
+# copy252TimesEachLabelValue(Binary252ValuesDominance, BinaryFileForDominance)
+# remove01emptylines(Binary252ValuesValence)
+
+# changeEmotionsToBinaryValue(BinaryFileForLiking, labelLikingFile)
+# copy252TimesEachLabelValue(Binary252ValuesLiking, BinaryFileForLiking)
+# remove01emptylines(Binary252ValuesLiking)
 
 
 
