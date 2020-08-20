@@ -1,5 +1,5 @@
 forOneValue, total, allrow = 252, 0, 10112
-nLabel, nTrial, nUser, nChannel, nTime  = 4, 40, 32, 40, 8064
+nLabel, nTrial, nUser, nChannel, nTime  = 4, 40, 22, 32, 8064
 
 
 BinaryFileForValence = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label_class_0.dat"
@@ -28,7 +28,7 @@ def convertData():
     s1 = open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_1.dat", 'w')
     s2 = open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_2.dat", 'w')
     s3 = open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_3.dat", 'w')
-    for i in range(22):
+    for i in range(nUser):
         if (i % 1 == 0):
             if i < 10:
                 name = '%0*d' % (2, i + 1)
@@ -38,11 +38,11 @@ def convertData():
         fname = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\s\\s" + str(name) + ".dat"
         f = open(fname, 'rb')
         x = pickle.load(f, encoding='latin1')
-        for tr in range(22):
+        for tr in range(nTrial):
             if (tr % 1 == 0):
-                for dat in range(8064):
+                for dat in range(nTime):
                     if (dat % 32 == 0):
-                        for ch in range(40):
+                        for ch in range(nChannel):
                             data.write(str(x['data'][tr][ch][dat]) + " ")
                 s0.write(str(x['labels'][tr][0]) + "\n")
                 s1.write(str(x['labels'][tr][1]) + "\n")
@@ -60,7 +60,7 @@ def sampleFeatures():
     print("Program started"+"\n")
     data = open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv','w')
 
-    for i in range(22):
+    for i in range(nUser):
         if(i%1 == 0):
             if i < 10:
                 name = '%0*d' % (2,i+1)
@@ -71,8 +71,8 @@ def sampleFeatures():
             for tr in range(nTrial): #ilość prób
                 if(tr%1 == 0):
                     for dat in range(nTime): #czas
-                        if(dat%32 == 0 ):
-                            for ch in range(32): #ilość kanałów
+                        if(dat%32 == 0):
+                            for ch in range(nChannel): #ilość kanałów
                                 # if (ch == 4 or ch == 16 or ch == 31):# or ch == 33 or ch == 34 or ch == 35 or ch == 36  or ch == 37 or ch == 38 or ch == 39 ): #ReliefAttribute10
                                 # if (ch == 4 or ch == 7 or ch == 16 or ch == 19  or ch == 21 or ch == 24 or ch == 31): #or ch == 33 or ch == 34 or ch == 35 or ch == 36 or ch == 37 or ch == 38 or ch == 39): #Relief5
                                 #if (ch == 32 or ch == 33 or ch == 34 or ch == 35 or ch == 36 or ch == 37 or ch == 38 or ch == 39 ):  # 33-40
@@ -81,7 +81,7 @@ def sampleFeatures():
                                 # if (ch == 8 or ch == 15 or ch == 24 or ch == 31):  # valence, beta, CP1 9, Oz 16, FC6 25, Cz 32
                                 # if (ch == 6 or ch == 20 or ch == 21 or ch == 22 or ch==23 or ch==24 or ch==27 or ch==31):  # valence, gamma, T7 7, CP6 21, CP2 22, C4 23, T8 24, FC6 25, F8 28
                                 #for beta RCA
-                                #if ((ch == 7 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 16 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 23 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)))):  
+                                #if ((ch == 7 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 16 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 23 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)))):
                                 if ch == 7 or ch == 16  or ch == 23:
                                 # if ((ch == 20 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7))) or (ch == 25 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 31 and (float(x['data'][tr][ch][dat]) > float(8) and float(x['data'][tr][ch][dat]) < float(13)))):  # arousal, theta CP6 21, alpha Cz 32, beta FC2 26
                                 # if ((ch == 26 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7))) or (ch == 31 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 22 and (float(x['data'][tr][ch][dat]) > float(8) and float(x['data'][tr][ch][dat]) < float(13)))):  #Geneva: arousal, theta CP6 21, alpha Cz 32, beta FC2 26
@@ -99,7 +99,7 @@ def sampleFeatures():
                                     # if (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7)):
                                     # if (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)):
                                     data.write(str(x['data'][tr][ch][dat]) + " ")
-                                if (ch+1 == 32):
+                                if (ch+1 == nChannel):
                                     data.write("\n")
                 data.write("\n")
     data.close()
@@ -134,23 +134,24 @@ def remove01emptylines(selectedLabelFiles):
                 if line.strip() != "":
                     file01.write(line)
 
-# convertData()
+convertData()
 sampleFeatures()
-# changeEmotionsToBinaryValue(BinaryFileForValence, labelValenceFile)
-# copy252TimesEachLabelValue(Binary252ValuesValence, BinaryFileForValence)
-# remove01emptylines(Binary252ValuesValence)
+remove01emptylines('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv')
+changeEmotionsToBinaryValue(BinaryFileForValence, labelValenceFile)
+copy252TimesEachLabelValue(Binary252ValuesValence, BinaryFileForValence)
+remove01emptylines(Binary252ValuesValence)
 
-# changeEmotionsToBinaryValue(BinaryFileForArousal, labelArousalFile)
-# copy252TimesEachLabelValue(Binary252ValuesArousal, BinaryFileForArousal)
-# remove01emptylines(Binary252ValuesArousal)
+changeEmotionsToBinaryValue(BinaryFileForArousal, labelArousalFile)
+copy252TimesEachLabelValue(Binary252ValuesArousal, BinaryFileForArousal)
+remove01emptylines(Binary252ValuesArousal)
 
-# changeEmotionsToBinaryValue(BinaryFileForDominance, labelDominanceFile)
-# copy252TimesEachLabelValue(Binary252ValuesDominance, BinaryFileForDominance)
-# remove01emptylines(Binary252ValuesValence)
+changeEmotionsToBinaryValue(BinaryFileForDominance, labelDominanceFile)
+copy252TimesEachLabelValue(Binary252ValuesDominance, BinaryFileForDominance)
+remove01emptylines(Binary252ValuesDominance)
 
-# changeEmotionsToBinaryValue(BinaryFileForLiking, labelLikingFile)
-# copy252TimesEachLabelValue(Binary252ValuesLiking, BinaryFileForLiking)
-# remove01emptylines(Binary252ValuesLiking)
+changeEmotionsToBinaryValue(BinaryFileForLiking, labelLikingFile)
+copy252TimesEachLabelValue(Binary252ValuesLiking, BinaryFileForLiking)
+remove01emptylines(Binary252ValuesLiking)
 
 
 
