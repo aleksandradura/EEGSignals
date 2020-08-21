@@ -6,20 +6,12 @@ import seaborn as sns
 
 
 # plt.figure(figsize=(40,40))
-
 # top_corr_features = cor.index
 # sns.heatmap(cor, annot=True, cmap=plt.cm.Reds)
 # fig, ax = plt.subplots(figsize=(10,6))
 # plt.show()
 
-# relevant_features = cor_target[cor_target>0.5]
-# print(relevant_features)
-# print(df[["1","2"]].corr())
-# print(df['1'].corr(df['2']))
 
-
-# df = pd.read_csv('C:\\Users\\aleks\\OneDrive\\Pulpit\data_preprocessed_python\\arffFiles\\allChannels.csv', sep=' ', index_col=False)
-# corr = df.corr()
 df = pd.read_csv('C:\\Users\\aleks\\OneDrive\\Pulpit\data_preprocessed_python\\arffFiles\\allChannels.csv', sep=' ',
                  # columns = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32'],
                      index_col=False)
@@ -41,60 +33,44 @@ def takeFirstChannelWithTheSmallestCorr():
             smallestValue = result[j]
             channel = j + 1
     return channel
+# print(takeFirstChannelWithTheSmallestCorr())
 
-print(takeFirstChannelWithTheSmallestCorr())
-def selectMinValue(N):
+def selectNextChannels(N):
     ch = takeFirstChannelWithTheSmallestCorr()
-    min, spr, m, z, t,cha = [], [], 1, 0, 0, 0
-    channelAmount = 1
-    channelList = []
+    minList, channelList, temp, channelAmount, minValue, cha = [], [], 1, 1, 0, 0
+    #wpisz w listę pierwszy element
     channelList.insert(0, ch)
-    # for h in range(32):
-    #     min.insert(h, 0)
-    # min.insert(0,0)
     for k in range(N):
         for i in range(32):
+            #wybór drugiego kanału
             if channelAmount == 1:
-                min.append(abs(df.corr().iloc[ch - 1, i]))
+                minList.append(abs(df.corr().iloc[ch - 1, i]))
             else:
+                #wybór kanałów - od trzeciego
                 for t in range(k):
-                    # print(channelList[m])
-                    z += abs(df.corr().iloc[channelList[t] - 1, i])
-
-                min.append(float(z) / float(channelAmount))
-                z = 0
-                print(str(channelList[t] - 1) + ' ' + str(i) + ' ' + str(min[i]))
+                    minValue += abs(df.corr().iloc[channelList[t] - 1, i])
+                minList.append(float(minValue) / float(channelAmount))
+                minValue = 0
+                # print(str(channelList[t] - 1) + ' ' + str(i) + ' ' + str(min[i]))
         for j in range(32):
-            if abs(min[j]) < m:
-                m = abs(min[j])
+            if abs(minList[j]) < temp:
+                temp = abs(minList[j])
                 cha = j + 1
-                print(str(min[j]) + ' ' + str(cha))
-        # for o in range(32):
-        #     min.pop(o)
-        min.clear()
-            # print(min[o])
+                # print(str(min[j]) + ' ' + str(cha))
+        #wyczyść listę dla kolejnego kanału
+        minList.clear()
         channelList.append(cha)
-        # print(cha)
-        z, m = 0, 1
+        minValue, temp = 0, 1
         channelAmount += 1
-
     return channelList
-# selectMinValue(3)
-# kanaly = []
-# kanaly = selectMinValue(5)
-# for z in range(5):
-#     print(kanaly[z])
-# cor = df.corr()
-# cor_target = abs(cor['17']).min()
-# print(cor_target)
 
-# print(abs(cor['17']))
-# print(abs(cor['24']))
+n = 5
+kanaly = []
+kanaly = selectNextChannels(n)
+for z in range(n):
+    print(kanaly[z])
 
-# second_value = 24
-# # print(abs(df.corr().iloc[16,0]))
-# # print(abs(df.corr().iloc[16]))
-# firstChannel = takeFirstChannelWithTheSmallestCorr()
+
 # s = []
 # for k in range(32):
 #     z = (abs(df.corr().iloc[firstChannel, k]) + abs(df.corr().iloc[23,k]))/2
