@@ -15,6 +15,7 @@ import seaborn as sns
 df = pd.read_csv('C:\\Users\\aleks\\OneDrive\\Pulpit\data_preprocessed_python\\asdf.csv', sep=' ', index_col=False)
 corr = df.corr()
 channels = 96
+
 def takeAverageList():
     result = []
     for i in range(channels):
@@ -61,10 +62,11 @@ def selectNextChannels(N):
         channelAmount += 1
     return channelList
 
-n = 5
+#amount of channels which we want to get
+ammount = 5
 channels = []
-channels = selectNextChannels(n)
-for z in range(n):
+channels = selectNextChannels(ammount)
+for z in range(ammount):
     print(channels[z])
 
 

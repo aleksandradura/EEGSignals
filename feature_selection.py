@@ -8,6 +8,7 @@ import pickle
 allrow = 121968
 channelMin = 14
 channelMax = 29
+nLabel, nTrial, nUser, nChannel, nTime = 4, 40, 22, 32, 8064
 allChannelsFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\allChannels.csv'
 channelsWithLabel = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\FS\\32channelsWith01.csv"
 selectedLabelFiles = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\FS\\01.csv"
@@ -17,12 +18,11 @@ allLabels = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label
 correlationFiles = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\FS\\correlation.csv"
 
 
-#ilość wierszy dla każdego uczestnika: 10080
-#dla 22 uczestników
+#10080 row for one user
+#22 users
 def sampleFeatures():
     data = open(allChannelsFile,'w')
-
-    for i in range(22):
+    for i in range(nUser):
         if(i%1 == 0):
             if i < 10:
                 name = '%0*d' % (2,i+1)
@@ -31,14 +31,14 @@ def sampleFeatures():
             # pobieranie plików binarnych każdego uczestnika z folderu s
             fname = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\s\\s"+str(name)+".dat"
             x = pickle.load(open(fname, 'rb'), encoding='latin1')
-            for tr in range(22): #ilość prób
+            for tr in range(nTrial): #ilość prób
                 if(tr%1 == 0):
-                    for dat in range(8064): #czas
+                    for dat in range(nTime):
                         if(dat%32 == 0 ):
-                            for ch in range(32): #ilość kanałów
+                            for ch in range(nChannel):
                                     # fout_data.write(str(ch+1) + " ");
                                     data.write(str(x['data'][tr][ch][dat]) + " ")
-                                    if (ch+1 == 32):
+                                    if (ch+1 == nChannel):
                                         data.write("\n")
                 data.write("\n")
     data.close()
