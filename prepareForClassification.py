@@ -12,7 +12,7 @@ label1 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_2
 label2 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_2_01.dat'
 label3 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_3_01.dat'
 
-#ilość wierszy dla każdego uczestnika: 10080
+#for one user: 10080 row
 import pickle
 def sampleFeatures():
     data = open(allChannelsFile,'w')
@@ -45,12 +45,11 @@ def removechannelsemptylines():
                 if line.strip() != "":
                     file.write(line)
 
-#to samo co pobieranie len do wartości num
+#take length for num
 def maxLenFunc():
     with open(allChannelsFile, 'r') as fileValue:
         maxLen = len(fileValue.readlines())
         return maxLen
-# print(maxLenFunc()) 10080
 
 def takeOneOrZeroValueFunc(label):
     with open(label, 'r') as fileValue:
@@ -60,21 +59,11 @@ def takeOneOrZeroValueFunc(label):
         return oneOrZero
 
 def readRowNumberFunc():
-    with open(rowNumberFile) as rowNumberFile:
+    with open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\rownumber.csv') as rowNumberFile:
         result = []
         for line in rowNumberFile:
             result.append(line.rstrip('\n'))
         return result
-
-# def ifTwoValueFunc():
-#     with open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv', 'r') as file:
-#         temp = []
-#         for line in file:
-#             if ' ' in line:
-#                 x = line.split(' ')
-#     return x
-#
-# print(ifTwoValueFunc())
 
 def selectThreeOrMoreChannelsFunc():
     with open(selectedChannels, 'r') as file:
@@ -93,12 +82,13 @@ def takeRowNumbFunc():
                 with open(allChannelsFile, 'r') as file2:
                     for num, allLine in enumerate(file2, 1):
                         y = allLine.split(' ')
-                        if x[0] == y[7]:
+                        #change y[channel] for channel which is the first value at file RandomTree
+                        if x[0] == y[0]:
                             with open(rowNumberFile, "a") as file1:
                                 file1.write(str(num))
                                 file1.write('\n')
-                            # print(num)
 
+#take valence, arousal, dominance, liking value (0 or 1) for SVM
 def execFunc(label, selectedLabel):
     r = len(readRowNumberFunc())
     re = readRowNumberFunc()
@@ -111,13 +101,12 @@ def execFunc(label, selectedLabel):
                     with open(selectedLabel, "a") as file1:
                         file1.write(str(oneOrZero[j]))
                         file1.write('\n')
-                    # print(oneOrZero[j])
 
-sampleFeatures()
-removechannelsemptylines()
+# sampleFeatures()
+# removechannelsemptylines()
 # selectThreeOrMoreChannelsFunc()
 # takeRowNumbFunc()
-# execFunc(label0, selectedLabel0)
-# execFunc(label1, selectedLabel1)
-# execFunc(label2, selectedLabel2)
-# execFunc(label3, selectedLabel3)
+execFunc(label0, selectedLabel0)
+execFunc(label1, selectedLabel1)
+execFunc(label2, selectedLabel2)
+execFunc(label3, selectedLabel3)

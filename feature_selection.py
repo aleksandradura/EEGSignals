@@ -44,8 +44,8 @@ def sampleFeatures():
     data.close()
 #sampleFeatures()
 
-#połączenie klasy etykietowej i wartości 32 kanałów arrfiles format dla korelacji
-def connectLabesWithChannels():
+# merge label file with file where are 32 channels - arrfiles format for correlation
+def mergeLabesWithChannels():
     with open(allLabels) as yh:
       with open(allChannelsFile) as xh:
           with open(correlationFiles, "w") as zh:
@@ -55,7 +55,7 @@ def connectLabesWithChannels():
             for i in range(allrow):
                 line = ylines[i].strip() + ' ' + xlines[i]
                 zh.write(line)
-# connectLabesWithChannels()
+# mergeLabesWithChannels()
 
 def writeToTable():
     with open(channelsWithLabel, "r") as file:

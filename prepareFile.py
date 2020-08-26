@@ -81,24 +81,19 @@ def sampleFeatures():
                                 # if (ch == 8 or ch == 15 or ch == 24 or ch == 31):  # valence, beta, CP1 9, Oz 16, FC6 25, Cz 32
                                 # if (ch == 6 or ch == 20 or ch == 21 or ch == 22 or ch==23 or ch==24 or ch==27 or ch==31):  # valence, gamma, T7 7, CP6 21, CP2 22, C4 23, T8 24, FC6 25, F8 28
                                 #for beta RCA
-                                #if ((ch == 7 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 16 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 23 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)))):
-                                if ch == 7 or ch == 16  or ch == 23:
-                                # if ((ch == 20 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7))) or (ch == 25 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 31 and (float(x['data'][tr][ch][dat]) > float(8) and float(x['data'][tr][ch][dat]) < float(13)))):  # arousal, theta CP6 21, alpha Cz 32, beta FC2 26
-                                # if ((ch == 26 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7))) or (ch == 31 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29))) or (ch == 22 and (float(x['data'][tr][ch][dat]) > float(8) and float(x['data'][tr][ch][dat]) < float(13)))):  #Geneva: arousal, theta CP6 21, alpha Cz 32, beta FC2 26
-                                #if (ch != 5 and ch != 8 and ch != 19):  # RandomTree
-                                #if (ch!=14 and ch!=9 and ch!=31): #k10 dla valence
-                                # if (ch != 14 and ch != 6 and ch != 13):  # k5 dla valence
-                                # if (ch != 31 and ch != 14):  # k10 dla arousal
-                                # if (ch != 14 and ch != 31 and ch != 6 and ch !=13):  # k5 dla arousal
-                                #if (ch != 14 and ch != 31 and ch != 9 and ch !=23):  # k10 dla dominance
-                                # if (ch!=6 and ch != 14 and ch != 9 and ch != 13 and ch !=31):  # k5 dla dominance
-                                # if (ch != 14 and ch != 31 and ch != 9):  # k10 dla liking
-                                #if (ch != 13 and ch != 9 and ch != 6 and ch !=14):  # k5 dla liking
+                                # if ((ch == 0 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7))) or (ch == 1 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7))) or (ch == 23 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)))):
+                                # if ch == 0 or ch == 1 or ch == 31:
+                                if ((ch == 0 and ((float(x['data'][tr][ch][dat]) > float(8) and float(x['data'][tr][ch][dat]) < float(13)) or (float(x['data'][tr][ch][dat]) < float(-8) and float(x['data'][tr][ch][dat]) > float(-13)))) or (ch == 30 and ((float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)) or (float(x['data'][tr][ch][dat]) < float(-14) and float(x['data'][tr][ch][dat]) > float(-29)))) or (ch == 11 and ((float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)) or (float(x['data'][tr][ch][dat]) < float(-14) and float(x['data'][tr][ch][dat]) > float(-29))))):  # arousal, theta CP6 21, alpha Cz 32, beta FC2 26
+                                # if ch == n and ((float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29) or float(x['data'][tr][ch][dat]) < float(-14) and float(x['data'][tr][ch][dat]) > float(-29))):
+                                # if ch == 0 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7)):
                                 #     data.write(str(ch+1) + " ")
                                 #     if (float(x['data'][tr][ch][dat]) > float(8) and float(x['data'][tr][ch][dat]) < float(13)):
-                                    # if (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7)):
-                                    # if (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)):
+                                # if (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7)):
+                                # if (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)):
                                     data.write(str(x['data'][tr][ch][dat]) + " ")
+                                # else:
+                                #     data.write('1 ')
+
                                 if (ch+1 == nChannel):
                                     data.write("\n")
                 data.write("\n")
@@ -134,24 +129,50 @@ def remove01emptylines(selectedLabelFiles):
                 if line.strip() != "":
                     file01.write(line)
 
-convertData()
+def connectLabesWithChannels():
+    with open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv') as xh:
+      with open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\connectTwoFiles.csv') as yh:
+          with open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\asdf.csv', "w") as zh:
+
+            xlines = xh.readlines()
+            ylines = yh.readlines()
+            for i in range(allrow):
+                line = ylines[i].strip() + ' ' + xlines[i]
+                zh.write(line)
+
+def copyToOtherFile():
+        with open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\asdf.csv") as f:
+            with open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\connectTwoFiles.csv", "w") as f1:
+                for line in f:
+                    f1.write(line)
+# convertData()
+
+# for i in range(0, 32):
+#     sampleFeatures(i)
+#     remove01emptylines('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv')
+#     connectLabesWithChannels()
+#     copyToOtherFile()
+
+
 sampleFeatures()
-remove01emptylines('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv')
-changeEmotionsToBinaryValue(BinaryFileForValence, labelValenceFile)
-copy252TimesEachLabelValue(Binary252ValuesValence, BinaryFileForValence)
-remove01emptylines(Binary252ValuesValence)
+# remove01emptylines('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv')
 
-changeEmotionsToBinaryValue(BinaryFileForArousal, labelArousalFile)
-copy252TimesEachLabelValue(Binary252ValuesArousal, BinaryFileForArousal)
-remove01emptylines(Binary252ValuesArousal)
 
-changeEmotionsToBinaryValue(BinaryFileForDominance, labelDominanceFile)
-copy252TimesEachLabelValue(Binary252ValuesDominance, BinaryFileForDominance)
-remove01emptylines(Binary252ValuesDominance)
-
-changeEmotionsToBinaryValue(BinaryFileForLiking, labelLikingFile)
-copy252TimesEachLabelValue(Binary252ValuesLiking, BinaryFileForLiking)
-remove01emptylines(Binary252ValuesLiking)
+# changeEmotionsToBinaryValue(BinaryFileForValence, labelValenceFile)
+# copy252TimesEachLabelValue(Binary252ValuesValence, BinaryFileForValence)
+# remove01emptylines(Binary252ValuesValence)
+#
+# changeEmotionsToBinaryValue(BinaryFileForArousal, labelArousalFile)
+# copy252TimesEachLabelValue(Binary252ValuesArousal, BinaryFileForArousal)
+# remove01emptylines(Binary252ValuesArousal)
+#
+# changeEmotionsToBinaryValue(BinaryFileForDominance, labelDominanceFile)
+# copy252TimesEachLabelValue(Binary252ValuesDominance, BinaryFileForDominance)
+# remove01emptylines(Binary252ValuesDominance)
+#
+# changeEmotionsToBinaryValue(BinaryFileForLiking, labelLikingFile)
+# copy252TimesEachLabelValue(Binary252ValuesLiking, BinaryFileForLiking)
+# remove01emptylines(Binary252ValuesLiking)
 
 
 
