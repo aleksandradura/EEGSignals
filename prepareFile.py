@@ -73,12 +73,6 @@ def sampleFeatures():
                     for dat in range(nTime): #czas
                         if(dat%32 == 0):
                             for ch in range(nChannel): #ilość kanałów
-                                # if (ch == 4 or ch == 16 or ch == 31):# or ch == 33 or ch == 34 or ch == 35 or ch == 36  or ch == 37 or ch == 38 or ch == 39 ): #ReliefAttribute10
-                                # if (ch == 4 or ch == 7 or ch == 16 or ch == 19  or ch == 21 or ch == 24 or ch == 31): #or ch == 33 or ch == 34 or ch == 35 or ch == 36 or ch == 37 or ch == 38 or ch == 39): #Relief5
-                                #if (ch == 32 or ch == 33 or ch == 34 or ch == 35 or ch == 36 or ch == 37 or ch == 38 or ch == 39 ):  # 33-40
-                                # if (ch == 12 or ch == 29 or ch == 31): # or ch == 33 or ch == 34 or ch == 35 or ch == 36 or ch == 37 or ch == 38 or ch == 39):  # Naive-bayes
-                                # if (ch == 12 or ch == 30 or ch == 31):  # Pz 13, Fz 31, Cz 32
-                                # if (ch == 8 or ch == 15 or ch == 24 or ch == 31):  # valence, beta, CP1 9, Oz 16, FC6 25, Cz 32
                                 # if (ch == 6 or ch == 20 or ch == 21 or ch == 22 or ch==23 or ch==24 or ch==27 or ch==31):  # valence, gamma, T7 7, CP6 21, CP2 22, C4 23, T8 24, FC6 25, F8 28
                                 #for beta RCA
                                 # if ((ch == 0 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7))) or (ch == 1 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7))) or (ch == 23 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)))):

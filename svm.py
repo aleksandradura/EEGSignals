@@ -30,13 +30,13 @@ def svm_classifier(file_y):
     print(accuracy_score(y_test, y_predict) * 100)
 
 
-print("Accuracy score of valence ")
+print("Accuracy score of valence: ")
 svm_classifier(labelFile0)
-print("Accuracy score of arousal ")
+print("Accuracy score of arousal: ")
 svm_classifier(labelFile1)
-print("Accuracy score of dominance ")
+print("Accuracy score of dominance: ")
 svm_classifier(labelFile2)
-print("Accuracy score of liking ")
+print("Accuracy score of liking: ")
 svm_classifier(labelFile3)
 
 
