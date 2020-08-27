@@ -28,7 +28,6 @@ def sampleFeatures():
                 name = '%0*d' % (2,i+1)
             else:
                 name = i+1
-            # pobieranie plików binarnych każdego uczestnika z folderu s
             fname = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\s\\s"+str(name)+".dat"
             x = pickle.load(open(fname, 'rb'), encoding='latin1')
             for tr in range(nTrial): #ilość prób

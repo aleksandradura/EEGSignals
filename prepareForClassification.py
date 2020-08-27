@@ -37,7 +37,7 @@ def sampleFeatures():
                 data.write("\n")
     data.close()
 
-def removechannelsemptylines():
+def removeChannelsEmptyLines():
     with open(allChannelsFile, "r") as file:
         lines = file.readlines()
         with open(allChannelsFile, "w") as file:
@@ -103,7 +103,7 @@ def execFunc(label, selectedLabel):
                         file1.write('\n')
 
 # sampleFeatures()
-# removechannelsemptylines()
+# removeChannelsEmptyLines()
 selectThreeOrMoreChannelsFunc()
 # takeRowNumbFunc()
 # execFunc(label0, selectedLabel0)
