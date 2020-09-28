@@ -1,11 +1,13 @@
 import numpy as np
 from sklearn.svm import SVC
+from sklearn import svm
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn import datasets, linear_model
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import cross_val_score
 import random
 np.random.seed(42)
 
@@ -17,6 +19,7 @@ file_x = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFile
 
 
 
+
 def shuffle_data(x,y):
     idx = np.random.permutation(len(x))
     x_data= x[idx]
@@ -25,7 +28,7 @@ def shuffle_data(x,y):
 
 def svm_classifier(file_y):
     mean = 0.0
-
+    a = 0
     X = np.genfromtxt(file_x, delimiter=' ')
     y = np.genfromtxt(file_y, delimiter=' ')
 
@@ -41,15 +44,27 @@ def svm_classifier(file_y):
         clf.fit(X_train, y_train)
         y_predict = clf.predict(X_test)
         mean += (accuracy_score(y_test, y_predict) * 100)
+    print("Average:")
     print(mean/10.0)
 
+    # cross-validation
+    clf = SVC(kernel='linear', C=1)
+    scores = cross_val_score(clf, X, y, cv=10)
+    print("Cross-validation:")
+    print("%2.2f (+/- %2.2f)" % (scores.mean() * 100, scores.std() * 100))
 
 print("Accuracy score of valence: ")
 svm_classifier(labelFile0)
+print("-------------------------")
+print("-------------------------")
 print("Accuracy score of arousal: ")
 svm_classifier(labelFile1)
+print("-------------------------")
+print("-------------------------")
 print("Accuracy score of dominance: ")
 svm_classifier(labelFile2)
+print("-------------------------")
+print("-------------------------")
 print("Accuracy score of liking: ")
 svm_classifier(labelFile3)
 
