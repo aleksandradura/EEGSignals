@@ -1,5 +1,5 @@
 forOneValue, total, allrow = 252, 0, 10112
-nLabel, nTrial, nUser, nChannel, nTime  = 4, 40, 22, 32, 8064
+nLabel, nTrial, nUser, nChannel, nTime  = 4, 40, 32, 40, 8064
 allChannelsFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\allChannels.csv'
 selectedChannels = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv'
 rowNumberFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\rownumber.csv'
@@ -65,15 +65,15 @@ def readRowNumberFunc():
             result.append(line.rstrip('\n'))
         return result
 
-def selectThreeOrMoreChannelsFunc():
+def selectThreeOrMoreChannelsFunc(amountOfColumn):
     with open(selectedChannels, 'r') as file:
         result = []
         for line in file:
             parts = line.split()
-            if len(parts) > 2:
+            if len(parts) > amountOfColumn:
                 print(' '.join(parts))
 
-def takeRowNumbFunc():
+def takeRowNumbFunc(theSmallestChannel):
     maxLen = maxLenFunc()
     with open(selectedChannels, 'r') as file:
         with open(rowNumberFile, "w") as file1:
@@ -83,7 +83,7 @@ def takeRowNumbFunc():
                     for num, allLine in enumerate(file2, 1):
                         y = allLine.split(' ')
                         #change y[channel] for channel which is the first value at file RandomTree
-                        if x[0] == y[0]:
+                        if abs(float(x[0])) == abs(float(y[theSmallestChannel])):
                             with open(rowNumberFile, "a") as file1:
                                 file1.write(str(num))
                                 file1.write('\n')
@@ -104,9 +104,9 @@ def execFunc(label, selectedLabel):
 
 # sampleFeatures()
 # removeChannelsEmptyLines()
-selectThreeOrMoreChannelsFunc()
-# takeRowNumbFunc()
-# execFunc(label0, selectedLabel0)
-# execFunc(label1, selectedLabel1)
-# execFunc(label2, selectedLabel2)
-# execFunc(label3, selectedLabel3)
+# selectThreeOrMoreChannelsFunc(2)
+# takeRowNumbFunc(11)
+execFunc(label0, selectedLabel0)
+execFunc(label1, selectedLabel1)
+execFunc(label2, selectedLabel2)
+execFunc(label3, selectedLabel3)
