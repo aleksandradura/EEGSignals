@@ -1,6 +1,6 @@
-forOneValue, total, allrow = 252, 0, 10112
-nLabel, nTrial, nUser, nChannel, nTime  = 4, 40, 22, 32, 8064
-minValue, maxValue = 30, 47
+forOneValue, total, allrow = 252, 0, 13000
+nLabel, nTrial, nUser, nChannel, nTime = 4, 40, 32, 32, 8064
+minValue, maxValue = 8, 47
 
 binaryFileForValence = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label_class_0.dat"
 labelValenceFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_0.dat'
@@ -18,16 +18,21 @@ binaryFileForLiking = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_pyt
 labelLikingFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_3.dat'
 binary252ValuesLiking = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_3_01.dat"
 
+oneRowFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv'
+toFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\asdf.csv'
+fromFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\connectTwoFiles.csv'
+
+from shutil import copyfile
 #convert files to read
 import pickle
 def convertData():
     #all 40 features
     data = open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\features_raw.dat", 'w')
     #0 - valence, 1 - arousal, 2 - dominance, 3 - liking
-    s0 = open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_0.dat", 'w')
-    s1 = open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_1.dat", 'w')
-    s2 = open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_2.dat", 'w')
-    s3 = open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_3.dat", 'w')
+    s0 = open(labelValenceFile, 'w')
+    s1 = open(labelArousalFile, 'w')
+    s2 = open(labelDominanceFile, 'w')
+    s3 = open(labelLikingFile, 'w')
     for i in range(nUser):
         if (i % 1 == 0):
             if i < 10:
@@ -56,8 +61,7 @@ def convertData():
 
 def sampleFeatures(n):
     print("Program started"+"\n")
-    data = open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv','w')
-
+    data = open(oneRowFile,'w')
     for i in range(nUser):
         if(i%1 == 0):
             if i < 10:
@@ -71,16 +75,11 @@ def sampleFeatures(n):
                     for dat in range(nTime):
                         if(dat%32 == 0):
                             for ch in range(nChannel):
-                                #for beta RCA
-                                # if ((ch == 0 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7))) or (ch == 1 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7))) or (ch == 23 and (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)))):
-                                # if ch == 0 or ch == 1 or ch == 31:
-                                # if ((ch == 0 and ((float(x['data'][tr][ch][dat]) > float(8) and float(x['data'][tr][ch][dat]) < float(13)) or (float(x['data'][tr][ch][dat]) < float(-8) and float(x['data'][tr][ch][dat]) > float(-13)))) or (ch == 30 and ((float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)) or (float(x['data'][tr][ch][dat]) < float(-14) and float(x['data'][tr][ch][dat]) > float(-29)))) or (ch == 11 and ((float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)) or (float(x['data'][tr][ch][dat]) < float(-14) and float(x['data'][tr][ch][dat]) > float(-29))))):  # arousal, theta CP6 21, alpha Cz 32, beta FC2 26
-                                if ch == n and ((float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue) or float(x['data'][tr][ch][dat]) < float(-minValue) and float(x['data'][tr][ch][dat]) > float(-maxValue))):
-                                # if ch == 0 and (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7)):
+                                #for RCA
+                                # if (ch == 19 and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue))) or (ch == 31 and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue))) or (ch == 29 and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue))):# or (ch == 1 and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue))):
+                                if ch == n and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue)):
                                 #     data.write(str(ch+1) + " ")
-                                #     if (float(x['data'][tr][ch][dat]) > float(8) and float(x['data'][tr][ch][dat]) < float(13)):
                                 # if (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7)):
-                                # if (float(x['data'][tr][ch][dat]) > float(14) and float(x['data'][tr][ch][dat]) < float(29)):
                                     data.write(str(x['data'][tr][ch][dat]) + " ")
                                 # else:
                                 #     data.write('1 ')
@@ -90,7 +89,7 @@ def sampleFeatures(n):
                 data.write("\n")
     data.close()
 
-#change Value to binary
+#change value to binary
 def changeEmotionsToBinaryValue(binaryFile, labelFile):
     fout_labels_class = open(binaryFile, 'w')
     with open(labelFile, 'r') as f:
@@ -103,7 +102,7 @@ def changeEmotionsToBinaryValue(binaryFile, labelFile):
 # copy 252 times each value
 def copy252TimesEachLabelValue(binary252Values, binaryFile):
     fout_labels_class = open(binary252Values, 'w')
-    #files with 0-1 values, for one movies 40 rows
+    #files with 0-1 values, for one movie 40 rows
     with open(binaryFile, 'r') as f:
 
         for val in f:
@@ -120,23 +119,35 @@ def remove01emptylines(selectedLabelFiles):
                 if line.strip() != "":
                     file01.write(line)
 
-def connectLabesWithChannels():
-    with open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv') as xh:
-      with open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\connectTwoFiles.csv') as yh:
-          with open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\asdf.csv', "w") as zh:
 
-            xlines = xh.readlines()
-            ylines = yh.readlines()
-            for i in range(allrow):
-                line = ylines[i].strip() + ' ' + xlines[i]
-                zh.write(line)
+def mergeLabelsWithChannels(fromFile, toFile, oneRowFile):
+    amount = 0
+    num_lines1 = sum(1 for line in open(fromFile))
+    num_lines2 = sum(1 for line in open(oneRowFile))
+    if num_lines1 > num_lines2:
+        amount = num_lines2
+    else:
+        amount = num_lines1
+    with open(oneRowFile) as xh:
+        with open(fromFile) as yh:
+            with open(toFile, "w") as zh:
+                xlines = xh.readlines()
+                ylines = yh.readlines()
+                for i in range(amount - 1):
+                        line = ylines[i].strip() + ' ' + xlines[i]
+                        zh.write(line)
 
-def copyToOtherFile():
-        with open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\asdf.csv") as f:
-            with open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\connectTwoFiles.csv", "w") as f1:
+def copyToOtherFile(fromFile, toFile):
+        with open(toFile) as f:
+            with open(fromFile, "w") as f1:
                 for line in f:
                     f1.write(line)
 
+def cleanFile(copiedFile):
+    f = open(copiedFile, 'w')
+    f.seek(0)
+    f.truncate()
+    f.close()
 
 def prepareLabelsFile():
     convertData()
@@ -158,15 +169,28 @@ def prepareLabelsFile():
     remove01emptylines(binary252ValuesLiking)
 
 
+# prepareLabelsFile()
 
-# sampleFeatures()
-# remove01emptylines('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv')
-
-for i in range(31, 32):
-    sampleFeatures(i)
+def forOneFrequency():
+    count = 0
+    cleanFile(fromFile)
+    sampleFeatures(0)
     remove01emptylines('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv')
-    connectLabesWithChannels()
-    copyToOtherFile()
+    copyToOtherFile(fromFile, oneRowFile)
+    count = 1
+    print(count)
+    for i in range(1, 32):
+        sampleFeatures(i)
+        remove01emptylines('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv')
+        mergeLabelsWithChannels(fromFile, toFile, oneRowFile)
+        copyToOtherFile(fromFile, toFile)
+        count += 1
+        print(count)
+
+
+forOneFrequency()
+
+
 
 
 
