@@ -18,11 +18,11 @@ labelFile3 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\3.cs
 file_x = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv'
 
 
-def shuffle_data(x,y):
+def shuffle_data(x, y):
     idx = np.random.permutation(len(x))
     x_data= x[idx]
     y_labels=y[idx]
-    return x_data,y_labels
+    return x_data, y_labels
 
 def svm_classifier(file_y):
     mean = 0.0
