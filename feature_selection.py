@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler
 import pickle
 
-allrow = 121968
+
 channelMin = 14
 channelMax = 29
 nLabel, nTrial, nUser, nChannel, nTime = 4, 40, 22, 32, 8064
@@ -14,7 +14,7 @@ channelsWithLabel = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_pytho
 selectedLabelFiles = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\FS\\01.csv"
 channelsFile = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\FS\\akuku2.csv"
 #0 valence, 1 arousal, 2 dominance, 3 liking
-allLabels = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_0_01.dat"
+allLabels = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_1_01.dat"
 correlationFiles = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\FS\\correlation.csv"
 
 
@@ -44,17 +44,23 @@ def sampleFeatures():
 #sampleFeatures()
 
 # merge label file with file where are 32 channels - arrfiles format for correlation
-def mergeLabesWithChannels():
+def mergeLabelsWithChannels():
+    amount = 0
+    num_lines1 = sum(1 for line in open(allLabels))
+    num_lines2 = sum(1 for line in open(allChannelsFile))
+    if num_lines1 > num_lines2:
+        amount = num_lines2
+    else:
+        amount = num_lines1
     with open(allLabels) as yh:
-      with open(allChannelsFile) as xh:
-          with open(correlationFiles, "w") as zh:
+        with open(allChannelsFile) as xh:
+            with open(correlationFiles, "w") as zh:
+                 xlines = xh.readlines()
+                 ylines = yh.readlines()
+                 for i in range(amount - 1):
+                     line = ylines[i].strip() + ' ' + xlines[i]
+                     zh.write(line)
 
-            xlines = xh.readlines()
-            ylines = yh.readlines()
-            for i in range(allrow):
-                line = ylines[i].strip() + ' ' + xlines[i]
-                zh.write(line)
-# mergeLabesWithChannels()
 
 def writeToTable():
     with open(channelsWithLabel, "r") as file:
@@ -105,7 +111,7 @@ def svm_classifier():
 
 def numberOfRows(ch1, ch2, ch3):
     count = len(open(channelsFile).readlines())
-    if count > 200:
+    if count > 150:
         acc = svm_classifier()
         if acc > 85:
             print(str(ch3) + " " + str(ch2) + " " + str(ch1) + " " + str(acc))
@@ -136,4 +142,5 @@ def takeAccAllChannels():
                         remove01emptylines()
                         numberOfRows(i, i2, i3)
 
-# takeAccAllChannels()
+# mergeLabelsWithChannels()
+takeAccAllChannels()
