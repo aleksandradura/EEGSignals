@@ -28,7 +28,6 @@ def shuffle_data(x,y):
 
 def svm_classifier(file_y):
     mean = 0.0
-    a = 0
     X = np.genfromtxt(file_x, delimiter=' ')
     y = np.genfromtxt(file_y, delimiter=' ')
 
@@ -53,19 +52,13 @@ def svm_classifier(file_y):
     print("Cross-validation:")
     print("%2.2f (+/- %2.2f)" % (scores.mean() * 100, scores.std() * 100))
 
-print("Accuracy score of valence: ")
+print("--------------------VALENCE----------------------")
 svm_classifier(labelFile0)
-print("-------------------------")
-print("-------------------------")
-print("Accuracy score of arousal: ")
+print("---------------------------AROUSAL-----------------------------")
 svm_classifier(labelFile1)
-print("-------------------------")
-print("-------------------------")
-print("Accuracy score of dominance: ")
+print("--------------------DOMINANCE----------------------")
 svm_classifier(labelFile2)
-print("-------------------------")
-print("-------------------------")
-print("Accuracy score of liking: ")
+print("-----------------LIKING-------------------")
 svm_classifier(labelFile3)
 
 
