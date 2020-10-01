@@ -6,8 +6,8 @@ from sklearn.preprocessing import StandardScaler
 import pickle
 
 
-channelMin = 14
-channelMax = 29
+channelMin = 30
+channelMax = 47
 nLabel, nTrial, nUser, nChannel, nTime = 4, 40, 22, 32, 8064
 allChannelsFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\allChannels.csv'
 channelsWithLabel = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\FS\\32channelsWith01.csv"
@@ -97,24 +97,28 @@ def svm_classifier():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
+    uniqueValue = len(numpy.unique(y))
+    if uniqueValue > 1:
+        sc = StandardScaler()
+        X_train = sc.fit_transform(X_train)
+        X_test = sc.transform(X_test)
 
-    sc = StandardScaler()
-    X_train = sc.fit_transform(X_train)
-    X_test = sc.transform(X_test)
-
-    clf = SVC(kernel='rbf', random_state=42)
-    clf.fit(X_train, y_train)
-    y_predict = clf.predict(X_test)
-    accuracy = accuracy_score(y_test, y_predict) * 100
-    return accuracy
+        clf = SVC(kernel='rbf', random_state=42)
+        clf.fit(X_train, y_train)
+        y_predict = clf.predict(X_test)
+        accuracy = accuracy_score(y_test, y_predict) * 100
+    else:
+        accuracy = 0
+    return accuracy, uniqueValue
 
 
 def numberOfRows(ch1, ch2, ch3):
     count = len(open(channelsFile).readlines())
     if count > 150:
-        acc = svm_classifier()
-        if acc > 85:
-            print(str(ch3) + " " + str(ch2) + " " + str(ch1) + " " + str(acc))
+        acc, uniq = svm_classifier()
+        if uniq > 1:
+            if acc > 80:
+                print(str(ch3) + " " + str(ch2) + " " + str(ch1) + " " + str(acc))
 
 
 def selectValueFunc(r, r2, r3):
