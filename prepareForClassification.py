@@ -1,8 +1,11 @@
+import prepareFile
+
 forOneValue, total, allrow = 252, 0, 10112
 nLabel, nTrial, nUser, nChannel, nTime  = 4, 40, 32, 40, 8064
 allChannelsFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\allChannels.csv'
 selectedChannels = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv'
 rowNumberFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\rownumber.csv'
+tempFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\xyz.csv'
 selectedLabel0 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\0.csv'
 selectedLabel1 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\1.csv'
 selectedLabel2 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\2.csv'
@@ -67,11 +70,15 @@ def readRowNumberFunc():
 
 def selectThreeOrMoreChannelsFunc(amountOfColumn):
     with open(selectedChannels, 'r') as file:
-        result = []
-        for line in file:
-            parts = line.split()
-            if len(parts) > amountOfColumn:
-                print(' '.join(parts))
+        with open(tempFile, 'a') as file1:
+            result = []
+            for line in file:
+                parts = line.split()
+                if len(parts) > amountOfColumn:
+                    # print(' '.join(parts))
+                    file1.write(' '.join(parts))
+                    file1.write('\n')
+
 
 def takeRowNumbFunc(theSmallestChannel):
     maxLen = maxLenFunc()
@@ -102,11 +109,20 @@ def execFunc(label, selectedLabel):
                         file1.write(str(oneOrZero[j]))
                         file1.write('\n')
 
+
 # sampleFeatures()
 # removeChannelsEmptyLines()
-# selectThreeOrMoreChannelsFunc(2)
-# takeRowNumbFunc(11)
-execFunc(label0, selectedLabel0)
-execFunc(label1, selectedLabel1)
-execFunc(label2, selectedLabel2)
-execFunc(label3, selectedLabel3)
+
+def prepareForClassification():
+    amountOfCol, rowNumb = 2, 1
+    prepareFile.cleanFile(tempFile)
+    selectThreeOrMoreChannelsFunc(amountOfCol)
+    prepareFile.cleanFile(selectedChannels)
+    prepareFile.copyToOtherFile(selectedChannels, tempFile)
+    takeRowNumbFunc(rowNumb)
+    execFunc(label0, selectedLabel0)
+    execFunc(label1, selectedLabel1)
+    execFunc(label2, selectedLabel2)
+    execFunc(label3, selectedLabel3)
+
+prepareForClassification()
