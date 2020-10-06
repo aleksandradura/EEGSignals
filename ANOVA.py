@@ -17,7 +17,7 @@ df = pd.read_csv('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\
                  # columns = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32'],
                      index_col=False)
 x = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32']
-# x = [ '1g', '2g', '3g', '4g', '5g', '6g', '7g', '8g', '9g', '10g', '11g', '12g', '13g', '14g', '15g', '16g', '17g', '18g', '19g', '20g', '21g', '22g', '23g', '24g', '25g', '26g', '27g', '28g', '29g', '30g', '31g', '32g']
+# x = [ '1b', '2b', '3b', '4b', '5b', '6b', '7b', '8b', '9b', '10b', '11b', '12b', '13b', '14b', '15b', '16b', '17b', '18b', '19b', '20b', '21b', '22b', '23b', '24b', '25b', '26b', '27b', '28b', '29b', '30b', '31b', '32b', '1g', '2g', '3g', '4g', '5g', '6g', '7g', '8g', '9g', '10g', '11g', '12g', '13g', '14g', '15g', '16g', '17g', '18g', '19g', '20g', '21g', '22g', '23g', '24g', '25g', '26g', '27g', '28g', '29g', '30g', '31g', '32g']
 # print(df)
 # x = ['1', '2', '3', '4', '5', '6', '7', '8']
 # df.boxplot(column= ['1t', '2t', '3t', '4t', '5t', '6t', '7t', '8t', '9t', '10t', '11t', '12t', '13t', '14t', '15t', '16t', '17t', '18t', '19t', '20t', '21t', '22t', '23t', '24t', '25t', '26t', '27t', '28t', '29t', '30t', '31t', '32t', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a', '10a', '11a', '12a', '13a', '14a', '15a', '16a', '17a', '18a', '19a', '20a', '21a', '22a', '23a', '24a', '25a', '26a', '27a', '28a', '29a', '30a', '31a', '32a', '1b', '2b', '3b', '4b', '5b', '6b', '7b', '8b', '9b', '10b', '11b', '12b', '13b', '14b', '15b', '16b', '17b', '18b', '19b', '20b', '21b', '22b', '23b', '24b', '25b', '26b', '27b', '28b', '29b', '30b', '31b', '32b'
@@ -25,12 +25,10 @@ x = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', 
 # plt.show()
 allChannels = 32
 
-# def findSmallestValue():
-
 
 def takeFirstChannel():
-    result = []
-    summ, channel, ammount = 0, 1, 0
+    result, channelsChain = [], []
+    summ, amount, channel = 0, 0, 1
     for i in range(allChannels):
         for j in range(allChannels):
             fvalue, pvalue = stats.f_oneway(abs(df[x[i]]), abs(df[x[j]]))
@@ -38,72 +36,28 @@ def takeFirstChannel():
                 pass
             else:
                 summ += float(pvalue)
-                ammount += 1
+                amount += 1
                 # print(str(i) + '  -  ' + str(j) + '  -  ' + str(pvalue))
         if summ != 0.0:
-            result.append(summ/(ammount))
+            result.append(summ/(amount))
         else:
-            result.append(1000)
+            result.append(1)
         summ = 0
     smallestValue = result[0]
     for k in range(len(result)):
         if float(result[k]) < float(smallestValue):
             smallestValue = result[k]
             channel = k + 1
-        # print(str(k) + '  -  ' + str(result[k]))
-    # print(channel)
-    return channel
-# print(takeFirstChannel())
+    channelsChain.append(channel)
+    return channelsChain
 
-
-def takeSecondChannel():
-    channelChain = []
-    fList, chList = [], []
-    smallest, secCh, small, chan = 0.0, 0, 0, 0
-    ch = takeFirstChannel()
-
-    channelChain.append(ch)
-    smallest = 1
-    for j in range(allChannels):
-        fvalue, pvalue = stats.f_oneway(abs(df[x[ch - 1]]), abs(df[x[j]]))
-        # print(str(j) + '  -  ' + str(pvalue))
-        # if numpy.isnan(pvalue):
-        #     pass
-        # else:
-        if pvalue < smallest:
-            smallest = pvalue
-            secCh = j + 1
-            # print(secCh, smallest)
-        # print(j, pvalue)
-        if pvalue == 0.0:
-            fList.append(fvalue)
-            # print(str(j+1) + '  -  ' + str(fvalue))
-            chList.append(j)
-    if len(fList) != 0:
-        small = fList[0]
-        for i in range(1, len(fList)):
-            if fList[i] > small:
-                small = fList[i]
-                # print(chList[i], small)
-                chan = chList[i] + 1
-        channelChain.append(chan)
-    else:
-        channelChain.append(secCh)
-    return channelChain
-
-def thirdChannel(N):
-    channels = takeSecondChannel()
-    # ch = takeFirstChannel()
-    chan, ch, small = 0, 0, 0
-    # secCh = takeSecondChannel()
-    result = []
+def takeSecondAndMoreChannels(N):
+    channels = takeFirstChannel()
+    chan, small, summp, summf, amount = 0, 0, 0, 0, 0
     summary, chList, fList = [], [], []
-    summp, summf, channel, amount = 0, 0, 1, 0
-    thirdCh = 0
-    for p in range(3, N + 1):
+    for p in range(1, N):
         for j in range(allChannels):
             for i in range(len(channels)):
-                # print(len(channels))
                 fvalue, pvalue = stats.f_oneway(abs(df[x[channels[i] - 1]]), abs(df[x[j]]))
                 summp += pvalue
                 summf += fvalue
@@ -111,7 +65,7 @@ def thirdChannel(N):
             summary.append(summp/amount)
             # print(j, summp/amount)
             if summp == 0.0:
-                fList.append((summf)/amount)
+                fList.append(summf/amount)
                 chList.append(j + 1)
                 # print(str(j + 1) + '  -  ' + str((summf)/amount))
             else:
@@ -123,23 +77,24 @@ def thirdChannel(N):
                 if fList[i] > small:
                     small = fList[i]
                     chan = chList[i]
-                    print(chList[i], small)
+                    # print(chList[i], small)
             channels.append(chan)
         else:
-            small = summary[0]
+            small = 1
             for k in range(len(summary)):
                 if small > summary[k]:
                     small = summary[k]
-                    ch = chList[k]
-                    print(ch, small)
-            channels.append(ch)
+                    chan = chList[k]
+                    # print(ch, small)
+            channels.append(chan)
         summary.clear()
         fList.clear()
         chList.clear()
     return channels
 
-ch = thirdChannel(5)
+#N - number of channels
+N = 5
+ch = takeSecondAndMoreChannels(N)
 for i in range(len(ch)):
     print(ch[i])
-
 
