@@ -1,7 +1,7 @@
 import prepareFile
 
 forOneValue, total, allrow = 252, 0, 10112
-nLabel, nTrial, nUser, nChannel, nTime  = 4, 40, 32, 40, 8064
+nLabel, nTrial, nUser, nChannel, nTime  = 4, 40, 32, 32, 8064
 allChannelsFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\allChannels.csv'
 selectedChannels = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv'
 rowNumberFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\rownumber.csv'
@@ -15,11 +15,10 @@ label1 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_2
 label2 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_2_01.dat'
 label3 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_3_01.dat'
 
-#for one user: 10080 row
 import pickle
 def sampleFeatures():
     data = open(allChannelsFile,'w')
-    for i in range(nUser):
+    for i in range(1):
         if(i%1 == 0):
             if i < 10:
                 name = '%0*d' % (2,i+1)
@@ -28,16 +27,16 @@ def sampleFeatures():
             # pobieranie plików binarnych każdego uczestnika z folderu s
             fname = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\s\\s"+str(name)+".dat"
             x = pickle.load(open(fname, 'rb'), encoding='latin1')
-            for tr in range(nTrial): #ilość prób
+            for tr in range(40): #ilość prób
                 if(tr%1 == 0):
-                    for dat in range(nTime): #czas
-                        if(dat%32 == 0 ):
+                    for dat in range(384, nTime): #czas
+                        # if(dat%32 == 0 ):
                             for ch in range(nChannel): #ilość kanałów
                                     # fout_data.write(str(ch+1) + " ");
                                     data.write(str(x['data'][tr][ch][dat]) + " ")
                                     if (ch+1 == nChannel):
                                         data.write("\n")
-                data.write("\n")
+                    data.write("\n")
     data.close()
 
 def removeChannelsEmptyLines():
@@ -110,11 +109,25 @@ def execFunc(label, selectedLabel):
                         file1.write('\n')
 
 
-# sampleFeatures()
-# removeChannelsEmptyLines()
+sampleFeatures()
+removeChannelsEmptyLines()
+
+
+# fname = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\s\\s01.dat"
+# with open(fname, 'rb') as f: content = pickle.load(f, encoding='latin1')
+# data = content['data']
+# print(data[0][1][10])
+# for i in range(40):
+#     for j in range(8064):
+#         for k in range(32):
+#             if data[i][k][j] == float('-5.713590975068666'):
+#                 print(i, j, k)
+#                 print(data[i][k][j])
+# with open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\trying.csv", "w") as file1:
+#     file1.write(str(data))
 
 def prepareForClassification():
-    amountOfCol, rowNumb = 2, 1
+    amountOfCol, rowNumb = 2, 14
     prepareFile.cleanFile(tempFile)
     selectThreeOrMoreChannelsFunc(amountOfCol)
     prepareFile.cleanFile(selectedChannels)
@@ -125,4 +138,4 @@ def prepareForClassification():
     execFunc(label2, selectedLabel2)
     execFunc(label3, selectedLabel3)
 
-prepareForClassification()
+# prepareForClassification()
