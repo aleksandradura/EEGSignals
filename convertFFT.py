@@ -10,18 +10,23 @@ import sys
 import numpy
 import collections
 import shutil
-import prepareFile as pf
+
 # Input data files are available in the read-only "../input/" directory
 # For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
-oneRowFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv'
+oneRowFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\OneRowFile.csv'
 toFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\asdf.csv'
-fromFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\connectTwoFiles.csv'
 file = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\xyz.csv"
+label0 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_0_01.dat'
+label1 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_1_01.dat'
 # file = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\allChannels.csv"
-
+amount = 0
+valence = ['1', '1', '1', '1', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1']
+arousal = ['1', '1', '1', '1', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '1', '1', '1', '1', '1', '1', '1', '0', '0', '1', '1', '1', '1', '0', '0', '0', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1']
 # for dirname, _, filenames in os.walk('/kaggle/input'):
 #     for filename in filenames:
 #         print(os.path.join(dirname, filename))
+f = open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\xyz.csv", "a")
+df_ch1 = pd.read_csv("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\allChannels.csv", sep=' ', header=0, low_memory=False)
 
 # /kaggle/input/eeg-sample/samplingPD.csv
 def removeSecondPart():
@@ -42,31 +47,36 @@ def sortDict():
     od = collections.OrderedDict(sorted(datW.items()))
     with open(file, "w") as f1:
         for keys, values in od.items():
-            print(str(keys) + ': ' + str(values))
+            # print(str(keys) + ': ' + str(values))
             f1.write(str(values) + ' ')
             f1.write('\n')
 
-
-def mergeLabelsWithChannels(fromFile, toFile, oneRowFile):
-    amount = 0
-    num_lines1 = sum(1 for line in open(fromFile))
-    num_lines2 = sum(1 for line in open(oneRowFile))
-    if num_lines1 > num_lines2:
-        amount = num_lines2
-    else:
+def countingRows(oneRowFile, file):
+    num_lines1 = sum(1 for line in open(oneRowFile))
+    num_lines2 = sum(1 for line in open(file))
+    if int(num_lines1) < int(num_lines2):
         amount = num_lines1
-    with open(oneRowFile) as xh:
-        with open(fromFile) as yh:
+        print(str(amount) + ' = ' + str(num_lines1))
+    else:
+        amount = num_lines2
+        print(str(amount) + ' = ' + str(num_lines2))
+    return amount
+
+def mergeLabelsWithChannels(oneRowFile, toFile, file):
+    # amount = countingRows(oneRowFile, file)
+    # print(amount)
+    with open(file) as xh:
+        with open(oneRowFile) as yh:
             with open(toFile, "w") as zh:
                 xlines = xh.readlines()
                 ylines = yh.readlines()
-                for i in range(amount - 1):
+                for i in range(countingRows(oneRowFile, file)):
                         line = ylines[i].strip() + ' ' + xlines[i]
                         zh.write(line)
 
-def copyToOtherFile(fromFile, toFile):
+def copyToOtherFile(oneRowFile, toFile):
     with open(toFile) as f:
-        with open(fromFile, "r+") as f1:
+        with open(oneRowFile, "w") as f1:
             for line in f:
                 f1.write(line)
 
@@ -76,18 +86,10 @@ def cleanFile(copiedFile):
     # f.seek(0)
     f.truncate()
     f.close()
-f = open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\xyz.csv", "a")
-col_list = ["ch1", "ch2"]
-df_ch1 = pd.read_csv("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\allChannels.csv", sep=' ', header=0)
-# print(df_ch1)
-# print(list(df_ch1.columns.values))
-# df_ch1.columns = ["ch1", "ch2"]
-# print(df_ch1)
-# print("DONE1")
-amount = 1
-for col in range(len(list(df_ch1.columns.values))):
-    # print(df_ch1.columns.values[col])
 
+
+
+def fastFourierTransform():
     #transform to frequency-domain
     #fs = 512                                # Sampling rate (512 Hz)
     fs = 128
@@ -103,23 +105,55 @@ for col in range(len(list(df_ch1.columns.values))):
     # The corresponding frequencies
     sample_freq = fftpack.fftfreq(df_ch1.size+1, d=1./fs)
 
-    # print(max(power))
-    # for i in range(7680):
-    #     print(power[i])
-    # print("razem= " + str(np.count_nonzero(power)))
+    return power, sample_freq
 
+def add01ValueForLabel():
+    power, sample_freq = fastFourierTransform()
+    countAll = []
+    count = 0
+    countingRows = {}
+    for i in range(len(power)):
+        if power[i] == 0:
+            count += 1
+            countingRows[i] = power[i - 1]
+            countAll.append(i)
+            # countingRows.append(i + 1)
+    # print("razem= " + str(np.count_nonzero(power)))
+    # print("0 counter= " + str(count))
+    # for x, y in countingRows.items():
+        # print(str(x) + ' ' + str(y))
+    k, a = 0, 0
+    with open(label1, 'w') as fi:
+        for z in range(len(arousal)):
+            a = countAll[k]
+            for h in range(a):
+                fi.write(arousal[z])
+                fi.write("\n")
+            k += 1
+add01ValueForLabel()
+
+
+
+
+
+amount = 1
+for col in range(len(list(df_ch1.columns.values))):
+
+    power, sample_freq = fastFourierTransform()
 
     # Define EEG bands
-    eeg_bands = {'Delta': (0, 4),
+    eeg_bands = {
+                'Delta': (0, 4),
                  'Theta': (4, 8),
                  'Alpha': (8, 12),
                  'Beta': (12, 30),
-                 'Gamma': (30, 47)}
+                 'Gamma': (30, 45)
+    }
 
     datW = {}
-    df_subbands = pd.DataFrame(columns = ["Delta", "Theta", "Alpha", "Beta", "Gamma"])
+    df_subbands = pd.DataFrame(columns=["Delta", "Theta", "Alpha", "Beta", "Gamma"])
 
-    numpy.set_printoptions(threshold=sys.maxsize)
+    # numpy.set_printoptions(threshold=sys.maxsize)
     # Take the mean of the fft amplitude for each EEG band. Enter subbands into dataframe
     eeg_band_fft = dict()
     for band in eeg_bands:
@@ -127,29 +161,30 @@ for col in range(len(list(df_ch1.columns.values))):
                            (abs(power) <= eeg_bands[band][1]))[0]
         # print(band)
         # print(str(freq_ix))
-        # print("freq_ix= " + str(freq_ix) + " fft_vals[freq_ix]= " + str(power[freq_ix]))
+        # print(" fft_vals[freq_ix]= " + str(power[freq_ix]))
 
         # print("razem= " + str(np.count_nonzero(sample_freq[freq_ix])))
         for i in range(np.count_nonzero(sample_freq[freq_ix])):
             datW[freq_ix[i]] = ' '.join(map(str, power[freq_ix][i]))
-    removeSecondPart()
-    removeSmallValues()
+    # removeSecondPart()
+    # removeSmallValues()
     # print([df_ch1.columns.values[col]])
 
-    if df_ch1.columns.values[col] == 'ch1':
-        cleanFile(oneRowFile)
-        cleanFile(file)
-        sortDict()
-        copyToOtherFile(oneRowFile, file)
-        print(amount)
-        # shutil.copyfile(file, oneRowFile)
-    else:
-        cleanFile(file)
-        sortDict()
-        mergeLabelsWithChannels(oneRowFile, toFile, file)
-        copyToOtherFile(oneRowFile, toFile)
-        amount += 1
-        print(amount)
+        if df_ch1.columns.values[col] == 'ch1':
+            cleanFile(oneRowFile)
+            cleanFile(file)
+            sortDict()
+            copyToOtherFile(oneRowFile, file)
+            print(amount)
+            # shutil.copyfile(file, oneRowFile)
+        else:
+
+            cleanFile(file)
+            sortDict()
+            mergeLabelsWithChannels(oneRowFile, toFile, file)
+            copyToOtherFile(oneRowFile, toFile)
+            amount += 1
+            print(amount)
 
 
 
