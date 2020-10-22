@@ -1,6 +1,6 @@
-forOneValue, total, allrow = 252, 0, 13000
+forOneValue, total, allrow = 7680, 0, 13000
 nLabel, nTrial, nUser, nChannel, nTime = 4, 40, 32, 32, 8064
-minValue, maxValue = 8, 47
+minValue, maxValue = 3, 7
 
 binaryFileForValence = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label_class_0.dat"
 labelValenceFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_0.dat'
@@ -22,6 +22,8 @@ oneRowFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arff
 toFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\asdf.csv'
 fromFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\connectTwoFiles.csv'
 
+
+
 from shutil import copyfile
 #convert files to read
 import pickle
@@ -33,7 +35,7 @@ def convertData():
     s1 = open(labelArousalFile, 'w')
     s2 = open(labelDominanceFile, 'w')
     s3 = open(labelLikingFile, 'w')
-    for i in range(nUser):
+    for i in range(1):
         if (i % 1 == 0):
             if i < 10:
                 name = '%0*d' % (2, i + 1)
@@ -59,10 +61,10 @@ def convertData():
     s3.close()
     data.close()
 
-def sampleFeatures(n):
+def sampleFeatures():
     print("Program started"+"\n")
-    data = open(oneRowFile,'w')
-    for i in range(nUser):
+    data = open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\allChannels.csv','w')
+    for i in range(4):
         if(i%1 == 0):
             if i < 10:
                 name = '%0*d' % (2,i+1)
@@ -72,12 +74,12 @@ def sampleFeatures(n):
             x = pickle.load(open(fname, 'rb'), encoding='latin1')
             for tr in range(nTrial):
                 if(tr%1 == 0):
-                    for dat in range(nTime):
-                        if(dat%32 == 0):
+                    for dat in range(384, nTime):
+                        # if(dat%32 == 0):
                             for ch in range(nChannel):
                                 #for RCA
-                                # if (ch == 19 and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue))) or (ch == 31 and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue))) or (ch == 29 and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue))):# or (ch == 1 and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue))):
-                                if ch == n and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue)):
+                                if (ch == 15  or ch == 7 or ch == 9 or ch == 23):#  or ch == 24):# or ch == 23 or ch == 10  or ch == 30 or ch == 26):# or (ch == 25 and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue))):
+                                # if ch == n and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue)):
                                 #     data.write(str(ch+1) + " ")
                                 # if (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7)):
                                     data.write(str(x['data'][tr][ch][dat]) + " ")
@@ -87,6 +89,8 @@ def sampleFeatures(n):
                                 if (ch+1 == nChannel):
                                     data.write("\n")
                 data.write("\n")
+                # data.write('0 0 0')
+                # data.write("\n")
     data.close()
 
 #change value to binary
@@ -120,6 +124,8 @@ def remove01emptylines(selectedLabelFiles):
                     file01.write(line)
 
 
+
+
 def mergeLabelsWithChannels(fromFile, toFile, oneRowFile):
     amount = 0
     num_lines1 = sum(1 for line in open(fromFile))
@@ -139,32 +145,32 @@ def mergeLabelsWithChannels(fromFile, toFile, oneRowFile):
 
 def copyToOtherFile(fromFile, toFile):
         with open(toFile) as f:
-            with open(fromFile, "w") as f1:
+            with open(fromFile, "r+") as f1:
                 for line in f:
                     f1.write(line)
 
 def cleanFile(copiedFile):
-    f = open(copiedFile, 'w')
-    f.seek(0)
+    f = open(copiedFile, 'r+')
+    # f.seek(0)
     f.truncate()
     f.close()
 
 def prepareLabelsFile():
     convertData()
 
-    changeEmotionsToBinaryValue(binaryFileForValence, labelValenceFile)
+    # changeEmotionsToBinaryValue(binaryFileForValence, labelValenceFile)
     copy252TimesEachLabelValue(binary252ValuesValence, binaryFileForValence)
     remove01emptylines(binary252ValuesValence)
 
-    changeEmotionsToBinaryValue(binaryFileForArousal, labelArousalFile)
+    # changeEmotionsToBinaryValue(binaryFileForArousal, labelArousalFile)
     copy252TimesEachLabelValue(binary252ValuesArousal, binaryFileForArousal)
     remove01emptylines(binary252ValuesArousal)
 
-    changeEmotionsToBinaryValue(binaryFileForDominance, labelDominanceFile)
+    # changeEmotionsToBinaryValue(binaryFileForDominance, labelDominanceFile)
     copy252TimesEachLabelValue(binary252ValuesDominance, binaryFileForDominance)
     remove01emptylines(binary252ValuesDominance)
 
-    changeEmotionsToBinaryValue(binaryFileForLiking, labelLikingFile)
+    # changeEmotionsToBinaryValue(binaryFileForLiking, labelLikingFile)
     copy252TimesEachLabelValue(binary252ValuesLiking, binaryFileForLiking)
     remove01emptylines(binary252ValuesLiking)
 
@@ -188,9 +194,10 @@ def forOneFrequency():
         print(count)
 
 
-forOneFrequency()
+# forOneFrequency()
 
-
+sampleFeatures()
+remove01emptylines('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\allChannels.csv')
 
 
 

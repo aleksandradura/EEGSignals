@@ -18,7 +18,7 @@ label3 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_2
 import pickle
 def sampleFeatures():
     data = open(allChannelsFile,'w')
-    for i in range(1):
+    for i in range(4):
         if(i%1 == 0):
             if i < 10:
                 name = '%0*d' % (2,i+1)
@@ -30,7 +30,6 @@ def sampleFeatures():
             for tr in range(40): #ilość prób
                 if(tr%1 == 0):
                     for dat in range(384, nTime): #czas
-                        # if(dat%32 == 0 ):
                             for ch in range(nChannel): #ilość kanałów
                                     # fout_data.write(str(ch+1) + " ");
                                     data.write(str(x['data'][tr][ch][dat]) + " ")
