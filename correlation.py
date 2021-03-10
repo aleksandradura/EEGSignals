@@ -14,7 +14,7 @@ import seaborn as sns
 
 df = pd.read_csv('C:\\Users\\aleks\\OneDrive\\Pulpit\data_preprocessed_python\\asdf.csv', sep=' ', index_col=False)
 corr = df.corr()
-channels = 8
+channels = 32
 
 def takeAverageList():
     result = []

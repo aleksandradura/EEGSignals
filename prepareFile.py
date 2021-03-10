@@ -1,26 +1,26 @@
 forOneValue, total, allrow = 7680, 0, 13000
 nLabel, nTrial, nUser, nChannel, nTime = 4, 40, 32, 32, 8064
-minValue, maxValue = 3, 7
+minValue, maxValue = 30, 47
+on, tw = 7, 8
+binaryFileForValence = "C:\\datasets\\data_preprocessed_python\\label_class_0.dat"
+labelValenceFile = 'C:\\datasets\\data_preprocessed_python\\labels_0.dat'
+binary252ValuesValence = "C:\\datasets\\data_preprocessed_python\\labels_252_0_01.dat"
 
-binaryFileForValence = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label_class_0.dat"
-labelValenceFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_0.dat'
-binary252ValuesValence = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_0_01.dat"
+binaryFileForArousal = "C:\\datasets\\data_preprocessed_python\\label_class_1.dat"
+labelArousalFile = 'C:\\datasets\\data_preprocessed_python\\labels_1.dat'
+binary252ValuesArousal = "C:\\datasets\\data_preprocessed_python\\labels_252_1_01.dat"
 
-binaryFileForArousal = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label_class_1.dat"
-labelArousalFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_1.dat'
-binary252ValuesArousal = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_1_01.dat"
+binaryFileForDominance = "C:\\datasets\\data_preprocessed_python\\label_class_2.dat"
+labelDominanceFile = 'C:\\datasets\\data_preprocessed_python\\labels_2.dat'
+binary252ValuesDominance = "C:\\datasets\\data_preprocessed_python\\labels_252_2_01.dat"
 
-binaryFileForDominance = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label_class_2.dat"
-labelDominanceFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_2.dat'
-binary252ValuesDominance = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_2_01.dat"
+binaryFileForLiking = "C:\\datasets\\data_preprocessed_python\\label_class_3.dat"
+labelLikingFile = 'C:\\datasets\\data_preprocessed_python\\labels_3.dat'
+binary252ValuesLiking = "C:\\datasets\\data_preprocessed_python\\labels_252_3_01.dat"
 
-binaryFileForLiking = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\label_class_3.dat"
-labelLikingFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_3.dat'
-binary252ValuesLiking = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_3_01.dat"
-
-oneRowFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv'
-toFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\asdf.csv'
-fromFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\connectTwoFiles.csv'
+oneRowFile = 'C:\\datasets\\data_preprocessed_python\\RandomTree.csv'
+toFile = 'C:\\datasets\\data_preprocessed_python\\asdf.csv'
+fromFile = 'C:\\datasets\\data_preprocessed_python\\connectTwoFiles.csv'
 
 
 
@@ -29,25 +29,25 @@ from shutil import copyfile
 import pickle
 def convertData():
     #all 40 features
-    data = open("C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\features_raw.dat", 'w')
+    data = open("C:\\datasets\\data_preprocessed_python\\\\features_raw.dat", 'w')
     #0 - valence, 1 - arousal, 2 - dominance, 3 - liking
     s0 = open(labelValenceFile, 'w')
     s1 = open(labelArousalFile, 'w')
     s2 = open(labelDominanceFile, 'w')
     s3 = open(labelLikingFile, 'w')
-    for i in range(1):
+    for i in range(5, 6):
         if (i % 1 == 0):
             if i < 10:
                 name = '%0*d' % (2, i + 1)
             else:
                 name = i + 1
-        fname = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\s\\s" + str(name) + ".dat"
+        fname = "C:\\datasets\\DEAP\\data_preprocessed_python\\s" + str(name) + ".dat"
         f = open(fname, 'rb')
         x = pickle.load(f, encoding='latin1')
         for tr in range(nTrial):
             if (tr % 1 == 0):
                 for dat in range(nTime):
-                    if (dat % 32 == 0):
+                    # if (dat % 32 == 0):
                         for ch in range(nChannel):
                             data.write(str(x['data'][tr][ch][dat]) + " ")
                 s0.write(str(x['labels'][tr][0]) + "\n")
@@ -63,14 +63,14 @@ def convertData():
 
 def sampleFeatures():
     print("Program started"+"\n")
-    data = open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\allChannels.csv','w')
-    for i in range(4):
+    data = open('C:\\datasets\\data_preprocessed_python\\arffFiles\\allChannels.csv','w')
+    for i in range(5, 6):
         if(i%1 == 0):
             if i < 10:
                 name = '%0*d' % (2,i+1)
             else:
                 name = i+1
-            fname = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\s\\s"+str(name)+".dat" #pobieranie plików binarnych każdego uczestnika z folderu s
+            fname = "C:\\datasets\\DEAP\\data_preprocessed_python\\s"+str(name)+".dat" #pobieranie plików binarnych każdego uczestnika z folderu s
             x = pickle.load(open(fname, 'rb'), encoding='latin1')
             for tr in range(nTrial):
                 if(tr%1 == 0):
@@ -78,19 +78,22 @@ def sampleFeatures():
                         # if(dat%32 == 0):
                             for ch in range(nChannel):
                                 #for RCA
-                                if (ch == 15  or ch == 7 or ch == 9 or ch == 23):#  or ch == 24):# or ch == 23 or ch == 10  or ch == 30 or ch == 26):# or (ch == 25 and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue))):
-                                # if ch == n and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue)):
-                                #     data.write(str(ch+1) + " ")
-                                # if (float(x['data'][tr][ch][dat]) > float(3) and float(x['data'][tr][ch][dat]) < float(7)):
-                                    data.write(str(x['data'][tr][ch][dat]) + " ")
-                                # else:
-                                #     data.write('1 ')
+                                #dlav4
+                                # if (ch == 24  or ch == 5 or ch == 12 or ch == 19):
+                                #dla 6
+                                # if (ch == 24  or ch == 5 or ch == 12 or ch == 19 or ch == 4 or ch == 23):# or ch==11 or ch==13 or ch==25 or ch==27 or ch==31):# or ch == 9):# or ch == 23 or ch == 2 or ch == 29):#  or ch == 30 or ch == 26):# or (ch == 25 and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue))):
+                                #dla 11
+                                # if (ch == 24  or ch == 5 or ch == 12 or ch == 19 or ch == 4 or ch == 23 or ch==11 or ch==13 or ch==25 or ch==27 or ch==31):
 
+                                # if ch == n and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue)):
+                                # if (ch != 0 or ch != 1 or ch != 9 or ch != 20):
+                                #dla 28
+                                # if ch not in (0,1,9,20):
+                                    # print(ch)
+                                data.write(str(x['data'][tr][ch][dat]) + " ")
                                 if (ch+1 == nChannel):
                                     data.write("\n")
                 data.write("\n")
-                # data.write('0 0 0')
-                # data.write("\n")
     data.close()
 
 #change value to binary
@@ -158,12 +161,12 @@ def cleanFile(copiedFile):
 def prepareLabelsFile():
     convertData()
 
-    # changeEmotionsToBinaryValue(binaryFileForValence, labelValenceFile)
+    changeEmotionsToBinaryValue(binaryFileForValence, labelValenceFile)
     copy252TimesEachLabelValue(binary252ValuesValence, binaryFileForValence)
     remove01emptylines(binary252ValuesValence)
 
     # changeEmotionsToBinaryValue(binaryFileForArousal, labelArousalFile)
-    copy252TimesEachLabelValue(binary252ValuesArousal, binaryFileForArousal)
+    copy252TimesEachLabelValue(binary252ValuesArousal, labelArousalFile)
     remove01emptylines(binary252ValuesArousal)
 
     # changeEmotionsToBinaryValue(binaryFileForDominance, labelDominanceFile)
@@ -175,7 +178,7 @@ def prepareLabelsFile():
     remove01emptylines(binary252ValuesLiking)
 
 
-# prepareLabelsFile()
+prepareLabelsFile()
 
 def forOneFrequency():
     count = 0
@@ -185,7 +188,7 @@ def forOneFrequency():
     copyToOtherFile(fromFile, oneRowFile)
     count = 1
     print(count)
-    for i in range(1, 32):
+    for i in range(0, 32):
         sampleFeatures(i)
         remove01emptylines('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv')
         mergeLabelsWithChannels(fromFile, toFile, oneRowFile)
@@ -196,8 +199,11 @@ def forOneFrequency():
 
 # forOneFrequency()
 
-sampleFeatures()
-remove01emptylines('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\allChannels.csv')
+# sampleFeatures()
+# remove01emptylines('C:\\datasets\\data_preprocessed_python\\arffFiles\\allChannels.csv')
+
+# convertData()
+
 
 
 

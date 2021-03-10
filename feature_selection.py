@@ -14,7 +14,7 @@ channelsWithLabel = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_pytho
 selectedLabelFiles = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\FS\\01.csv"
 channelsFile = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\FS\\akuku2.csv"
 #0 valence, 1 arousal, 2 dominance, 3 liking
-allLabels = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_1_01.dat"
+allLabels = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_0_01.dat"
 correlationFiles = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\FS\\correlation.csv"
 
 

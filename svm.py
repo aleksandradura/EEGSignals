@@ -15,7 +15,7 @@ labelFile0 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\0.cs
 labelFile1 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\1.csv'
 labelFile2 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\2.csv'
 labelFile3 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\3.csv'
-file_x = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv'
+file_x = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\fftValues.csv'
 
 
 def shuffle_data(x, y):
@@ -54,10 +54,10 @@ print("--------------------VALENCE----------------------")
 svm_classifier(labelFile0)
 print("---------------------------AROUSAL-----------------------------")
 svm_classifier(labelFile1)
-print("--------------------DOMINANCE----------------------")
-svm_classifier(labelFile2)
-print("-----------------LIKING-------------------")
-svm_classifier(labelFile3)
+# print("--------------------DOMINANCE----------------------")
+# svm_classifier(labelFile2)
+# print("-----------------LIKING-------------------")
+# svm_classifier(labelFile3)
 
 
 
