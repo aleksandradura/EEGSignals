@@ -1,41 +1,25 @@
+import pandas as pd
+from DEAP import name_files as nf
+
 forOneValue, total, allrow = 7680, 0, 13000
 nLabel, nTrial, nUser, nChannel, nTime = 4, 40, 32, 32, 8064
 minValue, maxValue = 30, 47
-on, tw = 7, 8
-binaryFileForValence = "C:\\datasets\\data_preprocessed_python\\label_class_0.dat"
-labelValenceFile = 'C:\\datasets\\data_preprocessed_python\\labels_0.dat'
-binary252ValuesValence = "C:\\datasets\\data_preprocessed_python\\labels_252_0_01.dat"
-
-binaryFileForArousal = "C:\\datasets\\data_preprocessed_python\\label_class_1.dat"
-labelArousalFile = 'C:\\datasets\\data_preprocessed_python\\labels_1.dat'
-binary252ValuesArousal = "C:\\datasets\\data_preprocessed_python\\labels_252_1_01.dat"
-
-binaryFileForDominance = "C:\\datasets\\data_preprocessed_python\\label_class_2.dat"
-labelDominanceFile = 'C:\\datasets\\data_preprocessed_python\\labels_2.dat'
-binary252ValuesDominance = "C:\\datasets\\data_preprocessed_python\\labels_252_2_01.dat"
-
-binaryFileForLiking = "C:\\datasets\\data_preprocessed_python\\label_class_3.dat"
-labelLikingFile = 'C:\\datasets\\data_preprocessed_python\\labels_3.dat'
-binary252ValuesLiking = "C:\\datasets\\data_preprocessed_python\\labels_252_3_01.dat"
-
-oneRowFile = 'C:\\datasets\\data_preprocessed_python\\RandomTree.csv'
-toFile = 'C:\\datasets\\data_preprocessed_python\\asdf.csv'
-fromFile = 'C:\\datasets\\data_preprocessed_python\\connectTwoFiles.csv'
+on, tw = 31, 32
 
 
 
-from shutil import copyfile
+
 #convert files to read
 import pickle
-def convertData():
+def convertData(minUser, maxUser):
     #all 40 features
-    data = open("C:\\datasets\\data_preprocessed_python\\\\features_raw.dat", 'w')
+    data = open(nf.targetFile + "features_raw.dat", 'w')
     #0 - valence, 1 - arousal, 2 - dominance, 3 - liking
-    s0 = open(labelValenceFile, 'w')
-    s1 = open(labelArousalFile, 'w')
-    s2 = open(labelDominanceFile, 'w')
-    s3 = open(labelLikingFile, 'w')
-    for i in range(5, 6):
+    s0 = open(nf.labelValenceFile, 'w')
+    s1 = open(nf.labelArousalFile, 'w')
+    s2 = open(nf.labelDominanceFile, 'w')
+    s3 = open(nf.labelLikingFile, 'w')
+    for i in range(minUser, maxUser):
         if (i % 1 == 0):
             if i < 10:
                 name = '%0*d' % (2, i + 1)
@@ -47,7 +31,6 @@ def convertData():
         for tr in range(nTrial):
             if (tr % 1 == 0):
                 for dat in range(nTime):
-                    # if (dat % 32 == 0):
                         for ch in range(nChannel):
                             data.write(str(x['data'][tr][ch][dat]) + " ")
                 s0.write(str(x['labels'][tr][0]) + "\n")
@@ -63,8 +46,8 @@ def convertData():
 
 def sampleFeatures():
     print("Program started"+"\n")
-    data = open('C:\\datasets\\data_preprocessed_python\\arffFiles\\allChannels.csv','w')
-    for i in range(5, 6):
+    data = open('C:\\datasets\\DEAP\\data_preprocessed_python\\allChannels.csv','w')
+    for i in range(on, tw):
         if(i%1 == 0):
             if i < 10:
                 name = '%0*d' % (2,i+1)
@@ -81,12 +64,11 @@ def sampleFeatures():
                                 #dlav4
                                 # if (ch == 24  or ch == 5 or ch == 12 or ch == 19):
                                 #dla 6
-                                # if (ch == 24  or ch == 5 or ch == 12 or ch == 19 or ch == 4 or ch == 23):# or ch==11 or ch==13 or ch==25 or ch==27 or ch==31):# or ch == 9):# or ch == 23 or ch == 2 or ch == 29):#  or ch == 30 or ch == 26):# or (ch == 25 and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue))):
+                                #if (ch == 24  or ch == 5 or ch == 12 or ch == 19 or ch == 4 or ch == 23):# or ch==11 or ch==13 or ch==25 or ch==27 or ch==31):# or ch == 9):# or ch == 23 or ch == 2 or ch == 29):#  or ch == 30 or ch == 26):# or (ch == 25 and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue))):
                                 #dla 11
-                                # if (ch == 24  or ch == 5 or ch == 12 or ch == 19 or ch == 4 or ch == 23 or ch==11 or ch==13 or ch==25 or ch==27 or ch==31):
+                                #if (ch == 24  or ch == 5 or ch == 12 or ch == 19 or ch == 4 or ch == 23 or ch==11 or ch==13 or ch==25 or ch==27 or ch==31):
 
                                 # if ch == n and (float(x['data'][tr][ch][dat]) > float(minValue) and float(x['data'][tr][ch][dat]) < float(maxValue)):
-                                # if (ch != 0 or ch != 1 or ch != 9 or ch != 20):
                                 #dla 28
                                 # if ch not in (0,1,9,20):
                                     # print(ch)
@@ -127,8 +109,6 @@ def remove01emptylines(selectedLabelFiles):
                     file01.write(line)
 
 
-
-
 def mergeLabelsWithChannels(fromFile, toFile, oneRowFile):
     amount = 0
     num_lines1 = sum(1 for line in open(fromFile))
@@ -154,55 +134,59 @@ def copyToOtherFile(fromFile, toFile):
 
 def cleanFile(copiedFile):
     f = open(copiedFile, 'r+')
-    # f.seek(0)
     f.truncate()
     f.close()
 
 def prepareLabelsFile():
-    convertData()
+    # convertData(on, tw)
 
-    changeEmotionsToBinaryValue(binaryFileForValence, labelValenceFile)
-    copy252TimesEachLabelValue(binary252ValuesValence, binaryFileForValence)
-    remove01emptylines(binary252ValuesValence)
+    changeEmotionsToBinaryValue(nf.binaryFileForValence, nf.labelValenceFile)
+    copy252TimesEachLabelValue(nf.binary252ValuesValence, nf.binaryFileForValence)
+    remove01emptylines(nf.binary252ValuesValence)
 
-    # changeEmotionsToBinaryValue(binaryFileForArousal, labelArousalFile)
-    copy252TimesEachLabelValue(binary252ValuesArousal, labelArousalFile)
-    remove01emptylines(binary252ValuesArousal)
+    changeEmotionsToBinaryValue(nf.binaryFileForArousal, nf.labelArousalFile)
+    copy252TimesEachLabelValue(nf.binary252ValuesArousal, nf.binaryFileForArousal)
+    remove01emptylines(nf.binary252ValuesArousal)
 
     # changeEmotionsToBinaryValue(binaryFileForDominance, labelDominanceFile)
-    copy252TimesEachLabelValue(binary252ValuesDominance, binaryFileForDominance)
-    remove01emptylines(binary252ValuesDominance)
-
+    # copy252TimesEachLabelValue(binary252ValuesDominance, binaryFileForDominance)
+    # remove01emptylines(binary252ValuesDominance)
+    #
     # changeEmotionsToBinaryValue(binaryFileForLiking, labelLikingFile)
-    copy252TimesEachLabelValue(binary252ValuesLiking, binaryFileForLiking)
-    remove01emptylines(binary252ValuesLiking)
+    # copy252TimesEachLabelValue(binary252ValuesLiking, binaryFileForLiking)
+    # remove01emptylines(binary252ValuesLiking)
 
 
-prepareLabelsFile()
+# prepareLabelsFile()
 
 def forOneFrequency():
     count = 0
-    cleanFile(fromFile)
+    cleanFile(nf.fromFile)
     sampleFeatures(0)
-    remove01emptylines('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv')
-    copyToOtherFile(fromFile, oneRowFile)
+    remove01emptylines(nf.targetFile + 'RandomTree.csv')
+    copyToOtherFile(nf.fromFile, nf.oneRowFile)
     count = 1
     print(count)
     for i in range(0, 32):
         sampleFeatures(i)
-        remove01emptylines('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv')
-        mergeLabelsWithChannels(fromFile, toFile, oneRowFile)
-        copyToOtherFile(fromFile, toFile)
+        remove01emptylines(nf.targetFile + 'RandomTree.csv')
+        mergeLabelsWithChannels(nf.fromFile, nf.toFile, nf.oneRowFile)
+        copyToOtherFile(nf.fromFile, nf.toFile)
         count += 1
         print(count)
-
+def deleteLatestColumn():
+    df = pd.read_csv('C:\\datasets\\DEAP\\data_preprocessed_python\\allChannels.csv', sep=' ')
+    # print(len(df.columns))
+    df = df.iloc[: , : -1]
+    # data = df[0:32]
+    df.to_csv('C:\\datasets\\DEAP\\data_preprocessed_python\\allChannels.csv', index=False, sep = ' ')
 
 # forOneFrequency()
 
 # sampleFeatures()
 # remove01emptylines('C:\\datasets\\data_preprocessed_python\\arffFiles\\allChannels.csv')
+# deleteLatestColumn()
 
-# convertData()
 
 
 

@@ -1,19 +1,22 @@
-import prepareFile
+from DEAP import prepareFile
 
 forOneValue, total, allrow = 252, 0, 10112
 nLabel, nTrial, nUser, nChannel, nTime  = 4, 40, 32, 32, 8064
-allChannelsFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\allChannels.csv'
-selectedChannels = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\arffFiles\\RandomTree.csv'
-rowNumberFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\rownumber.csv'
-tempFile = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\xyz.csv'
-selectedLabel0 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\0.csv'
-selectedLabel1 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\1.csv'
-selectedLabel2 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\2.csv'
-selectedLabel3 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\3.csv'
-label0 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_0_01.dat'
-label1 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_1_01.dat'
-label2 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_2_01.dat'
-label3 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_3_01.dat'
+
+targetPath = 'C:\\datasets\\DEAP\\data_preprocessed_python\\'
+
+allChannelsFile = targetPath + 'allChannels.csv'
+selectedChannels = targetPath + 'RandomTree.csv'
+rowNumberFile = targetPath + 'rownumber.csv'
+tempFile = targetPath + 'xyz.csv'
+selectedLabel0 = targetPath + '0.csv'
+selectedLabel1 = targetPath + '1.csv'
+selectedLabel2 = targetPath + '2.csv'
+selectedLabel3 = targetPath + '3.csv'
+label0 = targetPath + 'labels_252_0_01.dat'
+label1 = targetPath + 'labels_252_1_01.dat'
+label2 = targetPath + 'labels_252_2_01.dat'
+label3 = targetPath + 'labels_252_3_01.dat'
 
 import pickle
 def sampleFeatures():
@@ -25,7 +28,7 @@ def sampleFeatures():
             else:
                 name = i+1
             # pobieranie plików binarnych każdego uczestnika z folderu s
-            fname = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\s\\s"+str(name)+".dat"
+            fname = targetPath + "s"+str(name)+".dat"
             x = pickle.load(open(fname, 'rb'), encoding='latin1')
             for tr in range(40): #ilość prób
                 if(tr%1 == 0):
@@ -60,7 +63,7 @@ def takeOneOrZeroValueFunc(label):
         return oneOrZero
 
 def readRowNumberFunc():
-    with open('C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\rownumber.csv') as rowNumberFile:
+    with open(targetPath + 'rownumber.csv') as rowNumberFile:
         result = []
         for line in rowNumberFile:
             result.append(line.rstrip('\n'))
@@ -108,8 +111,8 @@ def execFunc(label, selectedLabel):
                         file1.write('\n')
 
 
-sampleFeatures()
-removeChannelsEmptyLines()
+# sampleFeatures()
+# removeChannelsEmptyLines()
 
 
 # fname = "C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\s\\s01.dat"

@@ -1,13 +1,13 @@
 import numpy as np
-from sklearn import datasets, linear_model
 
+targetPath = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\'
 
-file_x = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\asdf.csv'
-# file_x = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\fftValues.csv'
-# labelFile0 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\0.csv'
-# labelFile1 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\1.csv'
-labelFile0 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_0_01.dat'
-labelFile1 = 'C:\\Users\\aleks\\OneDrive\\Pulpit\\data_preprocessed_python\\labels_252_1_01.dat'
+file_x = targetPath + 'asdf.csv'
+# file_x = targetPath + 'fftValues.csv'
+# labelFile0 = targetPath + '0.csv'
+# labelFile1 = targetPath + '1.csv'
+labelFile0 = targetPath + 'labels_252_0_01.dat'
+labelFile1 = targetPath + 'labels_252_1_01.dat'
 
 
 
@@ -43,8 +43,6 @@ def regression(file_y):
         mae += metrics.mean_absolute_error(y_test, y_pred)
         fvalue, pvalue = stats.ttest_ind(y_test, y_pred, equal_var=False)
         p += pvalue
-    # print(y_test)
-    # print(y_pred)
     print("RMSE:", rmse / 10.0)
     print("MAE:", mae / 10.0)
     print("pValue:", p / 10.0)
