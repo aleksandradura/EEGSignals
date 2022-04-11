@@ -44,16 +44,18 @@ def count_number_of_4class():
     print('2 - ' + str(counter2))
     print('3 - ' + str(counter3))
     print('4 - ' + str(counter4))
+    # print(label4class)
+    return label4class
 
 def run_counter():
-    for n in range(32):
+    for n in range(15, 16):
         pf.convertData(n, n+1)
         pf.prepareLabelsFile()
         print('User:' + str(n + 1))
         count_number_of_2class()
         # count_number_of_4class()
 
-run_counter()
+# run_counter()
 
 # data_path = sample.data_path()
 # fname_fwd = data_path + '/MEG/sample/sample_audvis-meg-oct-6-fwd.fif'
@@ -66,5 +68,13 @@ run_counter()
 # fwd = mne.read_forward_solution(raw_fname)
 # fwd = mne.convert_forward_solution(fwd, surf_ori=True)
 # print(raw[0][0])
+
+pf.cleanFile(nf.label4class)
+label = count_number_of_4class()
+for i in range(len(label)):
+    with open(nf.label4class, 'a+') as file:
+        for k in range(7680):
+            file.write(str(label[i]) + '\n')
+        # print(label[i])
 
 

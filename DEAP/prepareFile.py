@@ -4,10 +4,7 @@ from DEAP import name_files as nf
 forOneValue, total, allrow = 7680, 0, 13000
 nLabel, nTrial, nUser, nChannel, nTime = 4, 40, 32, 32, 8064
 minValue, maxValue = 30, 47
-on, tw = 31, 32
-
-
-
+on, tw = 0, 32
 
 #convert files to read
 import pickle
@@ -53,7 +50,7 @@ def sampleFeatures():
                 name = '%0*d' % (2,i+1)
             else:
                 name = i+1
-            fname = "C:\\datasets\\DEAP\\data_preprocessed_python\\s"+str(name)+".dat" #pobieranie plików binarnych każdego uczestnika z folderu s
+            fname = "C:\\datasets\\DEAP\\data_preprocessed_python\\s"+str(name)+".dat"
             x = pickle.load(open(fname, 'rb'), encoding='latin1')
             for tr in range(nTrial):
                 if(tr%1 == 0):
@@ -95,7 +92,7 @@ def copy252TimesEachLabelValue(binary252Values, binaryFile):
     with open(binaryFile, 'r') as f:
 
         for val in f:
-            for forOne in range(forOneValue):
+            for forOne in range(30):
                 fout_labels_class.write(str(val))
             fout_labels_class.write("\n")
         fout_labels_class.write("\n")
@@ -138,7 +135,7 @@ def cleanFile(copiedFile):
     f.close()
 
 def prepareLabelsFile():
-    # convertData(on, tw)
+
 
     changeEmotionsToBinaryValue(nf.binaryFileForValence, nf.labelValenceFile)
     copy252TimesEachLabelValue(nf.binary252ValuesValence, nf.binaryFileForValence)
@@ -157,7 +154,6 @@ def prepareLabelsFile():
     # remove01emptylines(binary252ValuesLiking)
 
 
-# prepareLabelsFile()
 
 def forOneFrequency():
     count = 0
@@ -174,18 +170,20 @@ def forOneFrequency():
         copyToOtherFile(nf.fromFile, nf.toFile)
         count += 1
         print(count)
-def deleteLatestColumn():
-    df = pd.read_csv('C:\\datasets\\DEAP\\data_preprocessed_python\\allChannels.csv', sep=' ')
-    # print(len(df.columns))
+def deleteLatestColumn(file_name):
+    df = pd.read_csv(file_name, sep=' ')
     df = df.iloc[: , : -1]
-    # data = df[0:32]
-    df.to_csv('C:\\datasets\\DEAP\\data_preprocessed_python\\allChannels.csv', index=False, sep = ' ')
+    df.to_csv(file_name, index=False, sep = ' ')
 
 # forOneFrequency()
-
+# convertData(on, tw)
+# prepareLabelsFile()
 # sampleFeatures()
-# remove01emptylines('C:\\datasets\\data_preprocessed_python\\arffFiles\\allChannels.csv')
-# deleteLatestColumn()
+# remove01emptylines('C:\\datasets\\DEAP\\data_preprocessed_python\\allChannels.csv')
+# name = 'C:\\datasets\\data_preprocessed_python\\asdf.csv'
+# deleteLatestColumn('C:\\datasets\\DEAP\\data_preprocessed_python\\allChannels.csv')
+
+# copy252TimesEachLabelValue('C:\\datasets\\data_preprocessed_python\\1200.dat', 'C:\\datasets\\data_preprocessed_python\\labels_0.dat')
 
 
 

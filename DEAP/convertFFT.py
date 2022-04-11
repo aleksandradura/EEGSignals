@@ -20,7 +20,7 @@ q = filePath + "q.csv"
 file_x = filePath + 'RandomTree.csv'
 onlyRowNumbforThreeCol = filePath + 'onlyRowNumbforThreecol.csv'
 f = open(filePath + "xyz.csv", "a")
-df_ch1 = pd.read_csv("C:\\datasets\\DEAP\\data_preprocessed_python\\allChannels.csv", sep=',', low_memory=False, header=None)
+df_ch1 = pd.read_csv("C:\\datasets\\DEAP\\data_preprocessed_python\\allChannels.csv", sep=' ', low_memory=False, header=None)
 df_ch1.columns = ['ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'ch7', 'ch8', 'ch9', 'ch10', 'ch11', 'ch12', 'ch13', 'ch14', 'ch15', 'ch16', 'ch17', 'ch18', 'ch19', 'ch20', 'ch21', 'ch22', 'ch23', 'ch24', 'ch25', 'ch26', 'ch27', 'ch28', 'ch29', 'ch30', 'ch31', 'ch32']
 listOfthresholds = []
 
@@ -214,7 +214,7 @@ amount = 1
 # print(min_val)
 for col in range(len(list(df_ch1.columns.values))):
     power, sample_freq = fastFourierTransform()
-    print(col)
+    # print(col)
     # Define EEG bands
     eeg_bands = {
                 'Delta': (0.0, 4.0),

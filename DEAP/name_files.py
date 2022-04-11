@@ -20,3 +20,5 @@ oneRowFile = targetFile + 'RandomTree.csv'
 toFile = targetFile + 'asdf.csv'
 fromFile = targetFile + 'connectTwoFiles.csv'
 
+label4class = targetFile + 'label4class.csv'
+
